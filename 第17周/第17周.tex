@@ -1,0 +1,140 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{
+	\CJKfamily{gbsn}
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第17周作业}
+			\author{161220049\quad 黄奕诚}
+			\maketitle
+			
+			\section*{TC Chapter 32}
+			\subsection*{32.1-2}
+				因为$P$中每一个字符都不同，所以当找到了一个匹配之后，可以直接跳|$P$|位，而不是1位，具体算法如下：
+				\begin{algorithm}
+					\caption{NAIVE-STRING-MATCHER($T,P$)}
+					\begin{algorithmic}[1]
+						\STATE $n=T.length$ \\
+						\STATE $m=P.length$ \\
+						\STATE $k=0$ \\
+						\STATE $s=0$ \\
+						\WHILE{$s\le n-m$}
+						\STATE $i=1$ \\
+						\IF{$T[s]==P[1]$}
+						\STATE $k=s$ \\
+						\STATE $i=0$ \\
+						\WHILE{$T[k+i]==P[i]$ and $i<m$}
+						\IF{$i==m$}
+						\STATE Print "Pattern occurs with shift" $k$ \\
+						\ENDIF
+						\STATE $i=i+1$ \\
+						\ENDWHILE
+						\ENDIF
+						\STATE $s=s+i$\\
+						\ENDWHILE
+					\end{algorithmic}
+				\end{algorithm}
+			\subsection*{32.1-3}
+				\begin{proof}
+					因为$d\ge2$，并且前$i-1$个字母匹配的概率为$\frac{1}{d^{i-1}}$，所以字母对比较的期望值为\\
+					\begin{flalign}
+						(n-m+1)\sum_{i=1}^{m}\frac{1}{d^{i-1}} &= (n-m+1)\frac{1-(\frac{1}{d})^m}{1-\frac{1}{d}}\\
+						&=(n-m+1)\frac{1-d^{-m}}{1-d^{-1}}\\
+						&\le(n-m+1)\frac{1}{1-d^{-1}} \\
+						&\le(n-m+1)\frac{1}{1-\frac{1}{2}}\\
+						&=2(n-m+1)
+					\end{flalign}
+				\end{proof}
+			\subsection*{32.1-4}
+				假设$P$可以表示为$p_1\diamond p_2\diamond\cdots\diamond p_m$.可以用如下算法在$O(mn)$的时间内判断出$T$中是否存在这样的$P$：
+				\begin{algorithm}
+					\caption{GAP-STRING-MATCHER($T,P$)}
+					\begin{algorithmic}[1]
+						\STATE $i=1$ \\
+						\WHILE{$i\le m$}
+						\STATE $exi=0$
+						\FOR{$j=i$ \TO $n$}
+						\IF{$T[j]==P[i]$}
+						\STATE $exi=1$
+						\ENDIF
+						\ENDFOR
+						\IF{$exi==0$}
+						\RETURN\FALSE
+						\ENDIF
+						\STATE $i=i+1$ \\
+						\ENDWHILE
+						\RETURN\TRUE
+					\end{algorithmic}
+				\end{algorithm}
+			\subsection*{32.2-1}
+				考虑到$15\mod11=4,59\mod11=4,92\mod11=4$，所以共有3次伪命中.
+			\subsection*{32.2-2}
+				\indent
+				
+				对于相同长度的$k$个模式，只要在Rabin-Karp算法的预处理模块中对每一个模式计算它的值即可，并且对每一个模式执行第10-14行(即加一个for循环)，此时渐进运行时间为$O(km(n-m+1))$.
+				
+				对于不同长度的$k$个模式，只需要在执行第9行的for循环之前更新模式的长度即可，预先可以将每一个模式的长度存储在数组中，并在第9行的for循环外层再套一个for循环，以更新长度.
+			\subsection*{32.2-3}
+			\indent
+			
+				假设$P$是$m\times m$的矩阵，$T$是$n\times n$的矩阵.则对于每个$i\in[1,n-m+1],j\in[1,n-m+1]$计算$T$中每个规模为$m\times m$的子矩阵的值，求值时将其看作一维数组，由左到右，由上到下计算即可，并求出模式$P$的值.先比较值，若相等，为了摒除伪命中，则依次比对各个位上的字符，若全等则为一次occur.如此便完成了Rabin-Karp算法的拓展.
+			\subsection*{32.2-4}
+				\begin{proof}
+					假设$A(x)=B(x)$，则有$\sum_{i=0}^{n-1}(a_i-b_i)x^i\equiv0\mod q$.由Exercise 31.4-4及$q$为素数可知这个方程最多有$n-1$个解.从$q$中选中这$n-1$个解的概率为$P=\frac{n-1}{q}<\frac{n-1}{1000n}<\frac{1}{1000}$.所以若$A\neq B$，则最多有千分之一的概率得到$A(x)=B(x)$.若$A=B$，则必然有$A(x)=B(x)$.
+				\end{proof}
+			\subsection*{32.3-2}
+				\begin{tabular}{|c|c|c|c|c|c|}
+					\hline
+					现状态  & 输入$a$ & 输入$b$ & 现状态 & 输入$a$ & 输入$b$\\\hline
+					 0 & 1 & 0 & 11 & 1 & 12\\\hline
+					 1 & 1 & 2 & 12 & 3 & 13\\\hline
+					 2 & 3 & 0 & 13 & 14 & 0\\\hline
+					 3 & 1 & 4 & 14 & 1 & 15\\\hline
+					 4 & 3 & 5 & 15 & 16 & 8\\\hline
+					 5 & 6 & 0 & 16 & 1 & 17\\\hline
+					 6 & 1 & 7 & 17 & 3 & 18\\\hline
+					 7 & 3 & 8 & 18 & 19 & 0\\\hline
+					 8 & 9 & 0 & 19 & 1 & 20\\\hline
+					 9 & 1 & 10 & 20 & 3 & 21\\\hline
+					 10 & 11 & 0 & 21 & & \\\hline
+				\end{tabular}
+				图太懒不画qaq……
+			\subsection*{32.3-3}
+			\indent
+			
+				考虑到$P$有非重叠性质，即若$P_k\sqsupseteq P_q$，则$k=0$或$k=q$.于是相应的状态转移具有如下的特征：\\
+				\begin{enumerate}[(1)]
+					\item 如果当前输入使得状态机返回到除了0状态(初始状态)、1状态以外的任意状态，则已构造的一些后缀是要找的$P$的前缀\\
+					\item 除去(1)中情况，若状态返回到0状态，则输入不是pattern的第一个字母\\
+					\item 除去(1)(2)中情况，则会返回到1状态，即输入是pattern的第一个字母
+				\end{enumerate}
+			\subsection*{32.3-5}
+			\indent
+			
+				设$P$可以表示为$p_1\diamond p_2\diamond\cdots\diamond p_m$，思路与32.1-4类似，先寻找$P_1$，找到后再往后找$P_2$，如此往复.此时涉及到状态机，将其修改为：$P_i$状态所能接受的状态不再是pattern中涉及的状态，而只有$P_{i+1}$.如此可以在$O(n)$的时间内在$T$中匹配$P$.
+		\end{SChinese}
+	\end{CJK}
+\end{document}

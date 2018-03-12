@@ -1,0 +1,134 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{
+	\CJKfamily{gbsn}
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第14周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{TJ Chapter 7}
+			\subsection*{3}
+				尝试了各种方法……仍然不是很懂这个密码是什么玩意(答案里的hint感觉有问题？)
+			\subsection*{7}
+				\begin{enumerate}[(a)]
+					\item 因为$629=2^9+2^6+2^5+2^4+2^2+2^1$，所以$31^{628}\mod3551=31^{2^9}\cdot31^{2^6}\cdot31^{2^5}\cdot31^{2^4}\cdot31^{2^2}\cdot31^{2^1}\mod3551=1547\cdot1844\cdot2466\cdot2535\cdot261\cdot961(\mod3551)=2791$，所以密码为2791.\\
+					\item $23^{47}=23^{2^5+2^3+2^2+2^1+2^0}==769(\mod2257)$，所以密码为769.\\
+					\item $14^{13251}=14^{2^{13}+2^{12}+2^9+2^8+2^7+2^6+2^1+2^0}=109182\cdot53571\cdot22239\cdot17287\cdot51691\cdot106913\cdot196\cdot14=112135(\mod120979)$\\
+					同理$23^{13251}=25032(\mod120979)$，$71^{13251}=442(\mod120979)$，因此密码为112135 25032 442.\\
+					\item 
+					$23^{781}=4438(\mod45629),15^{781}=16332(\mod45629),61^{781}=31594(\mod45629)$，因此密码为4438 16332 31594.\\
+					
+				\end{enumerate}
+			\subsection*{9}
+				\begin{enumerate}[(a)]
+					\item $2791^{1997}=2971^{2^{10}+2^9+2^8+2^7+2^6+2^3+2^2+2^0}=31(\mod3551)$，故原码为31.\\
+					\item $34^{81}=2014(\mod5893)$，故原码为2014.\\
+					\item $112135^{27331}=112135^{2^{14}+2^{13}+2^{11}+2^9+2^7+2^6+2^1+2^0}=112135\cdot63902\cdot95035\cdot84959\cdot62565\cdot74334\cdot96724\cdot105127=14(\mod120979)$，故原码为14.\\
+					\item $129381^{671}=21712(\mod79403)$，故原码为21712.\\
+				\end{enumerate}
+			\subsection*{12}
+				当$E=1$时，$X^E\equiv X(\mod n)$对任意$n$和$X$都成立，当$n=1$时，原方程对任意$E,X$都成立，此外，解还有很多种情况，但实际上构不成对RSA密码系统的威胁，因为实际应用时会避免取边界特殊数，并且一般是大数，极少存在题中情况.
+			\section*{TC Chapter 31}
+			\subsection*{31.7-1}
+				因为$\Phi(319)=10\cdot28=280$，则只要求出方程$3k=280t+1$的当$k$最小时的正整数解即可，解得$k=187$，于是可得$d=187$.\\
+				当$M=100$时，加密后的信息为$100^{187}=100^{(2^7+2^5+2^4+2^3+2^1+2^0)}=122(\mod319)$，所以加密后得到的信息是122.
+			\subsection*{31.7-2}
+				\begin{proof}
+					首先，$ed\equiv1(\mod\Phi(n))$，因为$e=3$并且$d<\Phi(n)$，又$\Phi(n)=(p-1)(q-1)$，所以有$3d=k(p-1)(q-1)+1$，其中$k=1$或2.得到$p+q=n-\frac{3d-1}{k}+1$.由此可以在关于$n$的位数$\beta$的多项式时间中计算出$p+q$，用$(q+p)-p-q$代替$q-1$可以在关于$\beta$的多项式时间中计算$p$以及$q$，由此得证.
+				\end{proof}
+			\subsection*{31-2}
+				\begin{enumerate}[a.]
+					\item \begin{proof}
+						首先将$a$和$b$用二进制表示，则它们的长度分别为$\lg a$和$\lg b$.在进行长除法的过程中，每当计算一位的商，便要对那一位和$a$进行一次乘法，共操作了$\lg b$次乘法.其次用$a$做减法，对商中每一位数字重复这一操作，直至余数小于$b$，此时进行了$1+\lg q$次操作，由此根据嵌套关系，可得：该算法需要执行$O((1+\lg q)\lg b)$次位操作.
+					\end{proof}
+					\item \begin{proof}
+						由$(a)$问可知，计算$a\mod b$所需时间为$k(1+\lg q)\lg b$，其中$k$为某整数.由此$\mu(a,b)-\mu(b,a\mod b)=(1+\lg a)(1+\lg b)-(1+\lg b)(1+\lg(a\mod b))$.当$a\mod b$最小时，该值最大，此时是$(1+\lg a)(1+\lg b)-(1+\lg b)=\lg a(1+\lg b)$.由$(a)$问可以得到这一上界，所以执行的位操作次数至多为$c(\mu(a,b)-\mu(b,a\mod b))$.
+					\end{proof}
+					\item \begin{proof}
+						由$(b)$问知，该算法在第一次递归调用时进行最多$c(\mu(a,b)-\mu(b,a\mod b))$次位操作，在第二次进行最多$c(\mu(b,a\mod b)-\mu(a\mod b,b\mod(a\mod b)))$，依此类推.累加得到总共的位操作次数是$O(\mu(a,b))$.当输入两个$\beta$位数时，需要执行的位操作次数为$O(1+\beta)(1+\beta)=O(\beta^2)$.得证.
+					\end{proof}
+				\end{enumerate}
+			\subsection*{31-3}
+				\begin{enumerate}[a.]
+					\item \begin{proof}
+						由27.1节的FIB算法可知，该算法运行时间满足\begin{displaymath}
+							T(n)=T(n-1)+T(n-2)+\Theta(1)
+						\end{displaymath}
+						\begin{enumerate}[(a)]
+							\item 首先证明$T(n)=O(F_n)$：假设对任意的$k<n$有$T(k)\le cF_k-c_1k$，则有$T(n)=T(n-1)+T(n-2)+\Theta(1)\le cF_{n-1}-c_1(n-1)+cF_{n-2}-c_1(n-2)=cF_n-2c_1n+3c_1\le cF_n-c_2n$，由此可得$T(n)=O(F_n)$.\\
+							\item 其次证明$T(n)=\Omega(F_n)$，假设对任意的$k<n$有$T(k)\ge cF_k+c_1k$，则有$T(n)=T(n-1)+T(n-2)\ge cF_{n-1}+c_1(n-1)+cF_{n-2}+c_1(n-2)=cF_n+2c_1n-3c_1\ge cF_n+c_2n$，由此可得$T(n)=\Omega(F_n)$.\\
+						\end{enumerate}
+						综上可知，该算法运行时间为关于$F_n$的多项式时间.
+					\end{proof}
+				\item 记忆法算法如下：
+				\begin{algorithm}
+					\caption{FIB-MEMORY($n$)}
+					\begin{algorithmic}[1]
+						\STATE $F_1\rightarrow1,F_2\rightarrow1$ \\
+						\FOR {$i\rightarrow3$ \TO $n$}
+						\STATE $F_i\rightarrow F_{i-1}+F_{i-2}$ \\
+						\ENDFOR
+						\RETURN $F_n$
+					\end{algorithmic}
+				\end{algorithm}
+				\item 经过尝试可以发现\begin{displaymath}
+					\left[\begin{matrix}
+					0 & 1\\
+					1 & 1
+					\end{matrix}
+					\right]^k=\left[\begin{matrix}
+					F_{k-1} & F_k\\
+					F_k & F_{k+1}
+					\end{matrix}
+					\right]
+				\end{displaymath}
+				假设一次二阶矩阵的乘法运算时间为$O(1)$.由此可以得到如下运行时间为$O(\lg n)$的算法(使用了矩阵快速幂方法)：
+				\begin{algorithm}
+					\caption{FIB-MATRIX($A,n$)}
+					\begin{algorithmic}[1]
+					\STATE $T$ is the unit $2\times2$ matrix \\
+					\WHILE {$n\neq0$}
+					\IF {$n$ is even}
+					\STATE $T\rightarrow T*A$ \\
+					\ENDIF
+					\STATE $n\rightarrow n/2$ \\
+					\STATE $A\rightarrow A*A$ \\
+					\ENDWHILE
+					\RETURN $T[0,1]$	
+					\end{algorithmic}
+				\end{algorithm}
+				算法返回的$T[0,1]$的元素即为矩阵$T$右上角元素，即$F_k$.
+				\item 在对运行时间的规定修改后，\\
+				方法$(a)$中，$T(1)$为1，$T(0)$为0，需要的时间为$\Theta(2^n)$.\\
+				方法$(b)$中，运行时间为$\Theta(n^2)$.\\
+				方法$(c)$中，运行时间为$\Theta(n\lg n)$.\\
+				\end{enumerate}
+		
+		\end{SChinese}
+	\end{CJK}
+\end{document}

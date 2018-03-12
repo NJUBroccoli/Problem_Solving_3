@@ -1,0 +1,223 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{
+	\CJKfamily{gbsn}
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第15周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{TJ Chapter 8}
+			\subsection*{6}
+				\begin{enumerate}[(a)]
+					\item $d_{min}=2$，最多可以检1位错，无法纠错；\\
+					\item $d_{min}=1$，无法检错或纠错；\\
+					\item $d_{min}=1$，无法检错或纠错；\\
+					\item $d_{min}=2$，最多可以检1位错，无法纠错；\\
+				\end{enumerate}
+			\subsection*{7}
+				\begin{enumerate}[(a)]
+					\item 设$X=(x_1,x_2,x_3,x_4,x_5)^T$，由$HX=0$得到\[x_2=0\]\[x_1+x_3+x_5=0\]
+					\[x_1+x_4=0\]
+					解得零空间为\begin{displaymath}
+						(00000),(00101),(10011),(10110)
+					\end{displaymath}
+					零空间是$(5,3)$块.由于极大线性无关组的秩为2，所以一个生成矩阵为\begin{displaymath}
+					\left [\begin{matrix}
+					0 & 1 \\
+					0 & 0 \\
+					1 & 1 \\
+					0 & 1 \\
+					1 & 0
+					\end{matrix}\right]
+					\end{displaymath}
+					生成矩阵是不唯一的.\\
+					\item 设$X=(x_1,x_2,x_3,x_4,x_5,x_6)^T$，由$HX=0$得到
+					\[x_1+x_3=0\]\[x_1+x_2+x_4=0\]\[x_2+x_5=0\]\[x_1+x_2+x_6=0\]
+					解得零空间为\begin{displaymath}
+						(000000),(010100),(111010),(101101)
+					\end{displaymath}
+					零空间是$(6,4)$块.由于极大线性无关组的秩为2，所以一个生成矩阵为\begin{displaymath}
+					\left [\begin{matrix}
+					1 & 1 \\
+					1 & 0 \\
+					1 & 1 \\
+					0 & 1 \\
+					1 & 0 \\
+					0 & 1
+					\end{matrix}\right]
+					\end{displaymath}
+					生成矩阵是不唯一的.\\
+					\item 设$X=(x_1,x_2,x_3,x_4,x_5)^T$，由$HX=0$得到
+					\[x_1+x_4+x_5=0\]\[x_2+x_4+x_5=0\]
+					解得零空间为\begin{displaymath}
+						(00000),(00100),(00011),(00111)
+					\end{displaymath}
+					\begin{displaymath}
+						(11001),(11101),(11010),(11110)
+					\end{displaymath}
+					零空间是$(5,3)$块.由于极大线性无关组的秩为2，所以一个生成矩阵为\begin{displaymath}
+						\left [\begin{matrix}
+						1 & 1 & 1 & 1\\
+						1 & 1 & 1 & 1\\
+						0 & 1 & 0 & 1\\
+						0 & 0 & 1 & 1\\
+						1 & 1 & 0 & 0
+						\end{matrix}\right]
+					\end{displaymath}
+					生成矩阵不唯一.\\
+					\item 设$X=(x_1,x_2,x_3,x_4,x_5,x_6,x_7)^T$，由$HX=0$得到
+					\[x_4+x_5+x_6+x_7=0\]
+					\[x_2+x_3+x_6+x_7=0\]
+					\[x_1+x_3+x_5+x_7=0\]
+					\[x_2+x_3+x_6+x_7=0\]
+					解得零空间为\[(0000000),(1101001),(0101010),(1000011)\]
+					\[(1001100),(0100101),(1100110),(0001111)\]
+					\[(1110000),(0011001),(1011010),(0110011)\]
+					\[(0111100),(1010101),(0010110),(1111111)\]
+					零空间是$(7,3)$块.由于极大线性无关组的秩为4，一个生成矩阵为\begin{displaymath}
+					\left [\begin{matrix}
+					1 & 0 & 1 & 1\\
+					1 & 1 & 0 & 1\\
+					0 & 0 & 0 & 1\\
+					1 & 1 & 1 & 0\\
+					0 & 0 & 1 & 0\\
+					0 & 1 & 0 & 0\\
+					1 & 0 & 0 & 0\\ 
+					\end{matrix}\right]
+					\end{displaymath}
+					生成矩阵不唯一.
+				\end{enumerate}
+			\subsection*{8}
+				我构建的这样一个编码为\[(10100),(01010),(11001)\]，它的$d_{min}=3$，可以检2位错，纠1位错.
+			\subsection*{9}
+				依次计算$Hx_i(i=1,2,3,4)$，可以得到\begin{displaymath}
+					Hx_1=\left [\begin{matrix} 0 \\ 0 \\ 1 \end{matrix}\right]
+				\end{displaymath}
+				说明第4列有错
+				\begin{displaymath}
+				Hx_2=\left [\begin{matrix} 1 \\ 1 \\ 0 \end{matrix}\right]
+				\end{displaymath}
+				出现多位错
+				\begin{displaymath}
+				Hx_3=\left [\begin{matrix} 1 \\ 1 \\ 0 \end{matrix}\right]
+				\end{displaymath}
+				出现多位错
+				\begin{displaymath}
+				Hx_4=\left [\begin{matrix} 1 \\ 1 \\ 0 \end{matrix}\right]
+				\end{displaymath}
+				出现多位错
+			\subsection*{11}
+				\begin{enumerate}[(a)]
+					\item 是标准奇偶校验矩阵.由\[x_1+x_2=0\]\[x_3=x_4=0\]\[x_1+x_5=0\]得到它的标准生成矩阵为\begin{displaymath}
+					\left [\begin{matrix} 1 \\ 1 \\ 0 \\ 0 \\ 1 \end{matrix}\right]
+					\end{displaymath}
+					因为$d_{min}=3$，所以最多可以检2位错，纠1位错.\\
+					\item 是标准奇偶校验矩阵.由\[x_2+x_3=0\]\[x_1+x_2+x_4=0\]\[x_2+x_5=0\]\[x_1+x_2+x_6=0\]得到它的标准生成矩阵为\begin{displaymath}
+					\left [\begin{matrix} 1 & 0 \\ 0 & 1 \\ 0 & 1 \\ 1 & 1 \\ 0 & 1 \\ 1 & 1 \end{matrix}\right]
+					\end{displaymath}
+					因为$d_{min}=3$，所以最多可以检2位错，纠1位错.\\
+					\item 是标准奇偶校验矩阵.由\[x_1+x_2+x_3=0\]\[x_1+x_4=0\]得到它的标准生成矩阵为\begin{displaymath}
+					\left [\begin{matrix} 1 & 0 \\ 0 & 1 \\ 1 & 1 \\ 1 & 0 \end{matrix}\right]
+					\end{displaymath}
+					因为$d_{min}=2$，所以最多可以检1位错.\\
+					\item 是标准奇偶校验矩阵.由\[x_4=0\]\[x_2+x_3+x_5=0\]\[x_1+x_3+x_6=0\]
+					\[x_2+x_3+x_7=0\]得到它的标准生成矩阵为\begin{displaymath}
+					\left [\begin{matrix}
+					 1 & 0 & 0\\
+					 0 & 1 & 0\\
+					 0 & 0 & 1\\ 
+					 0 & 0 & 0\\
+					 0 & 1 & 1\\
+					 1 & 0 & 1\\
+					 0 & 1 & 1 
+					 \end{matrix}\right]
+					\end{displaymath}
+					因为$d_{min}=2$，所以最多可以检1位错.
+				\end{enumerate}
+			\subsection*{13}
+				\begin{enumerate}[(a)]
+					\item \begin{displaymath}
+						Hx=\left[\begin{matrix}
+						0 \\ 0 \\ 1
+						\end{matrix}\right]
+					\end{displaymath}
+					\item \begin{displaymath}
+					Hy=\left[\begin{matrix}
+					1 \\ 0 \\ 1
+					\end{matrix}\right]
+					\end{displaymath}
+					\item \begin{displaymath}
+					Hz=\left[\begin{matrix}
+					1 \\ 1 \\ 1
+					\end{matrix}\right]
+					\end{displaymath}
+					\item \begin{displaymath}
+					Hx=\left[\begin{matrix}
+					0 \\ 1 \\ 1
+					\end{matrix}\right]
+					\end{displaymath} 
+				\end{enumerate}
+			\subsection*{18}
+				\begin{proof}
+					设$x\in C_i$为非零数.定义一个从非零数到0的映射:$y\mapsto x+y$.对于0，可以表示为两个非零数之和，而且每个$x$对应唯一的$0$，所以若在第$i$个坐标存在非零数，则存在相同数量的0，于是正好有一半是0.若不存在非零数，则全为0.
+				\end{proof}
+			\subsection*{19}
+				\begin{proof}
+					设$x\in C$有奇权重，定义一个从奇码字到偶码字的映射：$y\mapsto x+y$.对于任意一个偶码字，都可以表示为两个奇码字之和，并且每个奇码字加上$x$对应唯一的偶码字，因此该映射是双射.所以若存在奇权重的码字，则存在相等数量的偶权重码字，此时正好有一半的偶权重码字.或者不存在奇权重码字，即全为偶权重码字.
+				\end{proof}
+			\subsection*{21}
+				当ASCII码的数量为128时，信息位有7位，所以对于$2^i-1>i+7$，解之得$i\ge4$，所以至少需要4位校验位，于是需要的矩阵规模为$4\times11$;\\
+				当ASCII码的数量为256时，信息位为8位，所以对于$2^i-1>i+8$，解之得$i\ge4$，所以至少需要4位校验位，于是需要的矩阵规模为$4\times12$;\\
+				若仅需要检错功能，则各需要的校验位为1位，对应的矩阵规模分别为$1\times7$和$1\times8$.
+			\subsection*{22}
+				三位信息位对应的标准偶校验矩阵为\begin{displaymath}
+					\left[\begin{matrix}
+					1 & 1 & 1 & 1
+					\end{matrix}\right]
+				\end{displaymath}
+				对于七位信息位，则为\begin{displaymath}
+					\left[\begin{matrix}
+					1 & 1 & 1 & 1 & 1 & 1 & 1 & 1
+					\end{matrix}\right]
+				\end{displaymath}
+				生成矩阵为\begin{displaymath}
+					\left[\begin{matrix}
+					1 & 0 & 0 & 0 & 0 & 0 & 0\\
+					0 & 1 & 0 & 0 & 0 & 0 & 0\\
+					0 & 0 & 1 & 0 & 0 & 0 & 0\\
+					\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots\\
+					0 & 0 & 0 & 0 & 0 & 0 & 1\\
+					1 & 1 & 1 & 1 & 1 & 1 & 1
+					\end{matrix}\right]
+				\end{displaymath}
+			\subsection*{23}
+				设需要$n$位校验位，则$2^n-1\ge n+20$，得到$n\ge5$，所以需要5位校验位来实现20位信息位的纠错.又由$2^n-1\ge n+32$，得到$n\ge6$，所以需要6位校验位来实现32位信息位的纠错.
+		
+		\end{SChinese}
+	\end{CJK}
+\end{document}

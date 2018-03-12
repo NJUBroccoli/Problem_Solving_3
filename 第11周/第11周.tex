@@ -1,0 +1,171 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{
+	\CJKfamily{gbsn}
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第12周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{TJ Chapter 2}
+				\subsection*{13}
+					\begin{proof}
+						\begin{enumerate}[(1)]
+							\item 首先由第二数学归纳法推第一数学归纳法：由第二数学归纳法知，对于某个整数$n_0$，若$S(n_0)$成立，且可以由$S(n_0),S(n_0+1),\cdots,S(k)$可推出$S(k+1)$，其中$k\ge n_0$，则对任意的$n\ge n_0$，$S(n)$都成立.因为$k$是任取的，当取到$n_0,n_0+1,\cdots$时，可以由$S(n_0)$推得$s(n_0+1)$，由$S(n_0),S(n_0+1)$推得$S(n_0+2)$，$\cdots$，将其中多余的条件删去，便有：$S(n_0)\rightarrow S(n_0+1),S(n_0+1)\rightarrow S(n_0+2),]\cdots$由此便推得第一数学归纳法.
+							\item 其次由第一数学归纳法推第二数学归纳法：不妨以良序定理为中间结论，先由第一数学归纳法推良序定理，再由良序定理推第二数学归纳法。对于第一点，由Theorem 2.2已经推出，对于第二点，证明如下：\\
+							设集合$S$满足如下条件：$n_0\in S$，若$n_0,n_1,\cdots,k\in S$，则$k+1\in S$.假设$S$不等于$A=\{k|k\ge n_0\}$，则令$T$为其补集，且$T$非空.由良序定理知$T$中有最小值$m\in A$，并且$m\neq n_0$，由$T$的定义知$m-1\in S$，由$S$的定义可推知$m\in S$，这与$m\in T$矛盾.因此可证得第二数学归纳法.
+							\item 综上所述，第一与第二数学归纳法等价.
+						\end{enumerate}
+					\end{proof}
+				\subsection*{14}
+					\begin{enumerate}[(1)]
+						\item 首先证明自然数的良序定理可以推知1是最小的自然数：\begin{proof}
+							因为自然数满足良序定理，所以存在最小数，而$N=\{n|n\ge1\}$，有$1\in N$，且对任意的$n_0\in N$，都有$n_0\ge1$，因此1是最小的自然数.
+						\end{proof}
+						\item 由良序定理证明数学归纳法与题13的第(2)部分相同，令上题的$n_0=1$，即可证明$S=\mathbb{N}$.
+					\end{enumerate}
+				\subsection*{15}
+					\begin{enumerate}[(a)]
+						\item 39=14*2+11, 14=11*1+3, 11=3*3+2, 3=2*1+1, 2=1*2+0\\gcd(14,39)=1，且$r=14,s=-5$
+						\item 234=165*1+69, 165=69*2+27, 69=27*2+15, 27=15*1+12, 15=12*1+3, 12=3*4+0\\gcd(234,165)=3，且$r=12,s=-17$
+						\item 9923=1739*5+1228, 1739=1228*1+511, 1228=511*2+206, 511=206*2+99, 206=99*2+8, 99=8*12+3, 8=3*2+2, 3=2*1+1, 2=1*2+0\\gcd(1739,9923)=1，且$r=3709,s=-650$
+						\item 562=471*1+91, 471=91*5+16, 91=16*5+11, 16=11*1+5, 11=5*2+1, 5=1*5+0\\gcd(471,562)=1，且$r=-105,s=88$
+						\item 23771=19945*1+3826, 19945=1826*10+1685, 1826=1685*1+141, 1685=141*11+134, 141=134*1+7, 134=7*19+1, 7=1*7+1\\gcd(23771,19945)=1，且$r=881,s=-1050$
+						\item 4357=3754*1+603, 3754=603*6+136, 603=136*4+59, 136=59*2+18, 59=18*3+5, 18=5*3+3, 5=3*1+2, 3=2*1+1, 2=1*2+0\\gcd(-4357,3754)=1，且$r=1463,s=1698$
+					\end{enumerate}
+				\subsection*{16}
+					\begin{proof}
+						假设$a,b$不互质，设gcd$(a,b)=m$，其中$m>1$且$m\in N$.可得$m|a$且$m|b$，因此$m|(ar+bs)$，故$m|1$，可得$m=1$，而$m>1$，矛盾.因此$a,b$互质.
+					\end{proof}
+				\subsection*{19}
+					\begin{proof}
+						因为$xy$是完全平方数，所以$xy=k^2$，其中$k\in\mathbb{Z}$.因为$x,y$互质，所以gcd$(x,y)=1$.若$k=1$，则$x=y=1$满足条件，若$k>1$，由算数基本定理可知，$k=p_1p_2\cdots p_i$，其中$p_1p_2\cdots p_i$都是素数，于是$k^2=p_1^2p_2^2\cdots p_i^2$，也即$xy=p_1^2p_2^2\cdots p_i^2$.假设$x,y$中有不是完全平方数的数，则其必含有因数$p_t$(指数为1)，此时另一个数也会含有因数$p_t$，因此它们不互质，矛盾。从而$x,y$都是完全平方数.
+					\end{proof}
+				\subsection*{22}
+					\begin{proof}
+						对于$\mathbb{Z}$中的任意元素$m$，都可以表示为带余除法：$m=nq+r$，其中$0\le r\le n-1$，由此可知$m-r\equiv0(\mod n)$，也即$m\equiv r(\mod n)$，所以任意整数都与集合$\{0,1,\cdots,n-1\}$中的某个元素关于$n$同余.
+					\end{proof}
+				\subsection*{28}
+					\begin{proof}
+						假设$p$是合数，则$p$可表示为$p=mn$，其中$2\le m,n<p$且$m,n\in\mathbb{N}$.由此有$2^p-1=2^{mn}-1=(2^m)^n-1$.设$s=2^m\ge4$，则原式等于$s^n-1$，有$(s-1)|(s^n-1)$.又因为$s-1\ge3>1$，所以$s^n-1$是合数，即$2^p-1$是合数，与其是素数矛盾，因此$p$是素数.
+					\end{proof}
+				\subsection*{29}
+					\begin{proof}
+						设自然数$p=p_1p_2p_3\cdots p_k\cdots+1$，$p_i$为素数，其中$p_1,p_2,\cdots,p_k$是其前$k$个素数，且$p_1=2,p_2=3$，由此有$p=6p_3p_4\cdots+1$.假设$p$不是素数，则存在$p_i(1\le i\le n)$使得$p_i|6p_3p_4\cdots$且$p_i|1$，后者显然不成立，因此$p=6p_3\cdots+1$是素数，结合Theorem 2.7知即形如$6n+1$的素数有无穷多个.
+					\end{proof}
+				\subsection*{30}
+					\begin{proof}
+						在上题中将$p_1=2,p_2=3$改为$p_1=p_2=2$，正1改为负1，其余同理可证.
+					\end{proof}
+				\subsection*{31}
+					\begin{proof}
+						假设存在整数$p,q$使得$p^2=2q^2$，则有$2|p^2$，因为2是素数，故$2|p$，$p$为偶数.设$p=2k$，得$q^2=2k^2$，可得$q$也为偶数.因为2是素数，原命题等价于$p,q$互质.而因为$p,q$都是偶数，显然不互质，所以矛盾.不存在整数$p,q$使得$p^2=2q^2$.另外，假设$\sqrt{2}$是有理数，即可以表示为$\frac{a}{b}$(gcd$(a,b)=1$).此时$a^2=2b^2$，又前面的证明可知并不存在这样的整数$a,b$.因此$\sqrt{2}$是无理数.
+					\end{proof}
+				\subsection*{P.E. 1}
+					\begin{lstlisting}[language={[ANSI]C}, numberstyle=\tiny,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50},frame=shadowbox, rulesepcolor=\color{red!20!green!20!blue!20}]
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+bool isPrime[100000];
+void Sieve(int n)
+{
+for (int i = 2; i <= sqrt(n); i++)
+	if (isPrime[i])
+	for (int j = i; j*i<= n; j++)
+		isPrime[i*j] = false;
+for (int k = 2; k <= n; k++)
+	if (isPrime[k])
+		printf("%d ", k);
+printf("\n");
+}
+int main()
+{
+	int N;
+	while (scanf("%d", &N) == 1) {
+		memset(isPrime, true, 
+		  sizeof(isPrime));
+		Sieve(N);
+	}
+	return 0;
+}
+				\end{lstlisting}
+				当$N=120$时，输出为2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113.
+				\subsection*{P.E. 3}
+					\begin{lstlisting}[language={[ANSI]C}, numberstyle=\tiny,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50},frame=shadowbox, rulesepcolor=\color{red!20!green!20!blue!20}]
+#include <stdio.h>
+int a,b,x,y;
+int gcd()
+{
+	int d=a;
+	if (b){
+		d=gcd(b,a%b,y,x);
+		y-=(a/b)*x;
+	}
+	else{
+		x=1;
+		y=0;
+	}
+	return d;
+}
+int main()
+{
+	while (scanf("%d%d",&a,&b)==2)
+	{
+		int ans=gcd();
+		printf("gcd:%d x:%d y:
+		%d\n",ans,x,y);
+	}
+	return 0;
+}
+
+					\end{lstlisting}	
+			\section*{CS 2.2}
+				\subsection*{2}
+					因为$a\cdot133-2m\cdot277=1$，所以$a\cdot133=1+2m\cdot277$，故可以保证$a$有一个模$m$的逆元，即$133(\mod m)$.
+				\subsection*{4}
+					因为gcd$(31,22)=1$，故存在$a$使得$a\cdot_{31}22=1$且只存在一个这样的$a$，当$a=24$\\
+					因为gcd$(10,2)=2\neq1$，故不存在$a$使得$a\cdot_{10}2=1$.
+				\subsection*{6}
+					因为$a\cdot133-m\cdot277=1$，所以由Theorem 2.15可知$a,m$互质，由此它们只有唯一的公因数，即1.
+				\subsection*{8}
+					由$k=jq+r$，所以$k=qj+r$，由欧几里得算法可知gcd$(q,k)$=gcd$(r,q)$.
+				\subsection*{15}
+					两者之间有关系：gcd$(j,k)$是gcd$(r,k)$的因数.当gcd$(r,k)=1$，即$r,k$互质时，有gcd$(j,k)$=gcd$(r,k)$=1.
+				\subsection*{16}
+					由题意知，$m=-qn-r$且$m=q'n+r',r'=n-r$，因此可得$q'=-q-1$.因为$r'$满足$0\le r'< n$，所以对于任意的整数(可以是非正整数)$m$，总存在整数$q',r'$使得$m=nq'+r'$，其中$0\le r'<n$，由此便由Theorem 2.12推广到了Theorem 2.1
+				\subsection*{17}
+					计算gcd($F_i,F_{i+1}$)时，在拓展GCD算法中，首先判断两者是否相等.因为斐波那契数列中，相等的元素只有$F_1,F_2$，若是它们则返回gcd=1,$x=1,y=0$.否则需要依次计算$q_i,r_i,k_{i+1}$以及$j_{i+1}$，并利用斐波那契数列$F_{i+2}=F_{i+1}+F_i$的性质进行替换.由于每一个$F_i$都可以表示为$F_1,F_2$的线性组合，所以GCD递归必有出口.最终运算结果为：gcd$(F_i,F_{i+1})=1,x=(-1)^{i-1}F_i,y=(-1)^iF_{i-1}$.
+				\subsection*{19}
+					$\textrm{gcd}(x,y)*\textrm{lcm}(x,y)=xy$.
+					\begin{proof}
+						设$a=\textrm{gcd}(x,y),b=\textrm{x,y}$，则有$x=ma,y=na$，其中$m,n$互质.所以$b=mna$，此时$ab=mna^2=(ma)(na)=xy=\textrm{gcd}(x,y)*\textrm{lcm}(x,y)$，得证.
+					\end{proof}
+		\end{SChinese}
+	\end{CJK}
+\end{document}

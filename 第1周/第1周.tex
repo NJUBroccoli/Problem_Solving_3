@@ -1,0 +1,226 @@
+\documentclass[twocolumn]{ctexart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usepackage{algorithm,algorithmic}
+
+\usetikzlibrary {positioning}
+%\usepackage {xcolor}
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
+
+\title{问题求解（三）第1周作业}
+\author{黄奕诚 161220049}
+
+\begin{document}
+	\maketitle
+	\section*{TC Chapter 24}
+	\subsection*{Exercise 24.1-2}
+		\begin{proof}
+			由条件知``图$G$不包含从$s$可以到达的权重为负值的环路''，故对于$s$与$V$中除去$s$外的任意一顶点$v$，都存在$\delta(s,v)$。在初始化后$v.d=\infty$随后通过RELAX操作，只有当$v.d>u.d+\omega(u,v)$时，$v.d$会减少(不再为$\infty$)，与此同时有$v.\pi=u$，于是$v$具有前驱结点.因此若存在$s$到$v$的路径，则$v$必然执行过RELAX，因此有$v.d<\infty$.
+		\end{proof}
+	\subsection*{Exercise 24.1-3}
+		为方便起见，在改变BELLMAN-FORD算法的同时，微改RELAX算法，使其可以返回一个``$v.d$是否改变''的$bool$值.
+	
+		\begin{algorithm}
+			\caption{RELAX($u,v,w$)}
+			\begin{algorithmic}[1]
+			\IF{$v.d>u.d+\omega(u,v)$}
+			\STATE $v.d=u.d+\omega(u,v)$\
+			\STATE $v.\pi=u$\
+			\RETURN \TRUE
+			\ENDIF
+			\RETURN \FALSE
+			\end{algorithmic}
+		\end{algorithm}
+		\begin{algorithm}
+		\caption{BELLMAN-FORDE($G,\omega,s$)}
+		\begin{algorithmic}[1]
+		\STATE INITIALIZE-SINGLE-SOURCE($G,s$)\
+		\FOR{ $i=1$ \TO $|G.V|-1$}
+			\STATE $flag$=\FALSE\
+        	\FOR{each edge$(u,v)\in G.E$}
+				\IF{\mbox{RELAX($u,v,w$)==\TRUE\space and $flag$==\FALSE}}
+				\STATE $flag$=\TRUE
+				\ENDIF	
+			\ENDFOR
+			\IF{$flag$==\FALSE}
+			\RETURN \TRUE
+			\ENDIF
+        \ENDFOR
+        \FOR{each edge$(u,v)\in G.E$}
+        \IF{$v.d>u.d+\omega(u,v)$}
+        \RETURN \FALSE
+        \ENDIF
+        \ENDFOR
+		\end{algorithmic}
+		\end{algorithm}	
+	\subsection*{Exercise 24.1-4}
+		只需要将第7行换为$v.d=-\infty$即可，并且算法返回的值仍符合原先的要求。算法如下：\\
+		\begin{algorithm}
+		\caption{BELLMAN-FORD($G,\omega,s$)}
+		\begin{algorithmic}[1]
+			\STATE INITIALIZE0SINGLE-SOURCE($G,s$)\
+			\FOR{$i=1$ \TO $|G.V|-1$}
+			\FOR{each edge $(u,v)\in G.E$}
+			\STATE RELAX$(u,v,\omega)$\
+			\ENDFOR
+			\ENDFOR
+			\STATE $flag$=\TRUE\
+			\FOR{each edge$(u,v)\in G.E$}
+			\IF{$v.d>u.d+\omega(u,v)$}
+			\STATE $v.d=-\infty$\
+			\STATE $flag$=\FALSE\
+			\ENDIF
+			\ENDFOR
+			\RETURN $flag$
+		\end{algorithmic}
+		\end{algorithm}
+	\subsection*{Exercise 24.2-2}
+		\begin{proof}
+			对于拓扑排序中最后一个结点$u$，假设其有后继结点，则与拓扑排序矛盾，因此不存在$v\in G.Adj[u]$，因此算法第4、5行不会被执行。因此，改变后的算法仍然正确，与原算法等效。
+		\end{proof}
+	\subsection*{Exercise 24.3-2}
+		\begin{center}
+			\begin {tikzpicture}[-latex ,auto ,node distance =4 cm and 5cm ,on grid ,
+			semithick ,
+			state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
+				draw,processblue , text=blue , minimum width =1 cm}]
+			\node[state] (A) {$0$};
+			\node[state] (B) [below =of A] {$-1$};
+			\path (A) edge [bend left=30] node {$-1$} (B);
+			\path (B) edge [bend left=30] node {$-1$} (A);
+		\end{tikzpicture}
+		\end{center}
+		根据DIJKSTRA算法，得到的下方结点的$d$值为-1，而实际上应该为$-\infty$，因此得到了不正确的结果。
+		\begin{proof}
+			定理24.6的证明不成立的关键在于：不能满足$\delta(s,y)\le\delta(s,u)$
+		\end{proof}
+	\subsection*{Exercise 24.3-4}
+		\begin{algorithm}
+		\caption{CHECK-OUTPUT($G,\omega,s$)}
+		\begin{algorithmic}[1]
+			\STATE $G'=G$\
+			\STATE DAG-SHORTEST-PATHS($G',\omega,s$)\
+			\STATE topologically sort the vertices of $G$\
+			\FOR{each vertex $v_1$ in $G$, $v_2$ in $G'$, taken in topologically sorted order}
+			\IF{$v_1.\pi\neq v_2.\pi$ or $v_1.d\neq v_2.d$}
+			\RETURN \FALSE
+			\ENDIF
+			\ENDFOR
+			\RETURN \TRUE
+		\end{algorithmic}
+		\end{algorithm}
+	\subsection*{Exercise 24.3-7}
+	该图将每条边$(u,v)\in E$替换成$\omega(u,v)$条具有单位权重的边，于是边数$|E'|=\sum_{(u,v)\in E}^{}\omega(u,v)$，因此结点个数变为$|V'|=\sum_{(u,v)\in E}^{}\omega(u,v)-1$.
+	\begin{proof}
+		由于广度优先搜索不计权重，每次从灰色结点搜与其相邻的白色结点（可以将所有权重视为1），因此对于$V$中一结点$v_0$，其相邻的$V$中其他结点与其距离越近，便越早搜索到，便越早涂上黑色；这与Dijkstra算法从优先队列中抽取结点的次序是一致的。
+	\end{proof}
+	\subsection*{Exercise 24.5-2}
+	\begin{center}
+		\begin {tikzpicture}[-latex ,auto ,node distance =2 cm and 2.5cm ,on grid ,
+		semithick ,
+		state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
+			draw,processblue , text=blue , minimum width =1 cm}]
+		\node[state] (S) {$S$};
+		\node[state] (A) [below left =of S] {$A$};
+		\node[state] (B) [below right =of S] {$B$};
+		\path (S) edge node {$1$} (A);
+		\path (S) edge node {$1$} (B);
+		\path (A) edge node {$0$} (B);
+		\end{tikzpicture}
+	\end{center}
+	如图所示，共有3棵最短路径树，且三条边$(S,A)$,$(S,B)$,$(A,B)$都存在最短路径树包含它，也存在最短路径树不包含它，满足题意。
+	\subsection*{Exercise 24.5-5}
+	\begin{center}
+		\begin {tikzpicture}[-latex ,auto ,node distance =2 cm and 2.5cm ,on grid ,
+		semithick ,
+		state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
+			draw,processblue , text=blue , minimum width =1 cm}]
+		\node[state] (S) {$S$};
+		\node[state] (A) [below left =of S] {$A$};
+		\node[state] (B) [below right =of S] {$B$};
+		\path (S) edge [bend right = 20] node {$1$} (A);
+		\path (S) edge [bend left = 20] node {$1$} (B);
+		\path (A) edge [bend left = 20] node {$0$} (B);
+		\path (B) edge [bend left = 20] node {$0$} (A);
+		\end{tikzpicture}
+	\end{center}
+	与此同时，设定$A.\pi=B$，且$B.\pi=A$，于是$G_{\pi}$中形成了一条环路。
+	\subsection*{Exercise 24-2}
+	\subsubsection*{a.}
+		\begin{proof}
+			假设盒子$x$嵌套于盒子$y$中，盒子$y$嵌套于盒子$z$中，也即存在排列$\pi$，使得$x_{\pi(1)}<y_1$，$x_{\pi(2)}<y_2$，$\ldots$，$x_{\pi(d)}<y_d$，同时存在排列$\tau$，使得$y_{\tau(1)}<z_1$，$y_{\tau(2)}<z_2$，$\ldots$，$y_{\tau(d)}<z_d$，因此存在一种排列使得$x_{\pi(\tau(1))}<z_1$，$x_{\pi(\tau(2))}<z_2$，$\ldots$，$x_{\pi(\tau(d))}<z_d$.所以嵌套关系是传递的。
+		\end{proof}
+	\subsubsection*{b.}
+		盒子$x$嵌套于盒子$y$ $(*)$的充要条件为：按非递减序排列的$x$各元素在各个位上都比f非递减序排列的$y$各元素小。   $(**)$
+		\begin{proof}
+			若满足$(**)$，则将非递减序中的$x$与$y$各元素两两配对，并使$y$恢复先前次序，同时根据配对改变$x$的次序，便存在使之成立的一种排列；\\
+		    若满足$(*)$，则存在一个排列$\pi$，使得$x_{\pi(1)}<y_1$，$x_{\pi(2)}<y_2$，$\ldots$，$x_{\pi(d)}<y_d$，则$x$中的最小值必小于$y$中的最小值（否则与$(*)$矛盾），同理$x$中第$n$小值小于$y$中第$n$小值，于是得到了$(**)$；
+		\end{proof}
+		\begin{algorithm}
+		\caption{JUDGE-NESTED($x,y,d$)}
+		\begin{algorithmic}[1]
+			\STATE sort $x,y$ in increasing sequence\
+			\FOR{$i=1$ \TO $d$}
+			\IF{$x_i>y_i$}
+			\RETURN \FALSE
+			\ENDIF
+			\ENDFOR
+			\RETURN \TRUE
+		\end{algorithmic}
+		\end{algorithm}
+		这个算法总时间为$O(d\lg d)$.\\
+	c.
+		\begin{algorithm}
+		\caption{LONGEST-SEQUENCE($G,n,d$)}
+		\begin{algorithmic}[1]
+			\FOR{each pair($B_i,B_j$) in $G$}
+				\IF{JUDGE-NESTED($B_i,B_j,d$)}
+					\STATE add $B_j$ to $G.Adj[B_i]$\
+				\ENDIF
+			\ENDFOR
+			\STATE $H=\emptyset$，$dis=-\infty$\
+			\FOR{each vertex $s$ in $G$}
+				\STATE $H_1=\emptyset$\
+				\FOR{each vertex $u\in G.V-\{s\}$}
+					\STATE $u.color$=WHITE,$u.d=\infty$,$u.\pi=NIL$\
+				\ENDFOR
+				\STATE $s.color$=GRAY,$s.d=0$,$s.\pi=NIL$,$Q=\emptyset$\
+				\STATE ENQUEUE($Q,s$)\
+				\WHILE{$Q\neq\infty$}
+					\STATE $u$=DEQUEUE($Q$)\
+					\FOR{each $v\in G.Adj[u]$}
+						\IF{$v.color==WHITE$}
+							\STATE $v.d=u.d+1$， $v.\pi=u$\
+							\STATE ENQUEUE($Q,v$)\
+						\ENDIF
+					\ENDFOR
+				\ENDWHILE
+				\STATE record $u.\pi$ until $s$ into $H_1$\
+			%	\STATE $u.color=BLACK$\
+				\IF{$u.d>dis$}
+				\STATE $dis=u.d$，$H=H_1$\
+				\ENDIF
+			\ENDFOR
+			\RETURN $H$
+		\end{algorithmic}
+		\end{algorithm}
+	\subsection*{Exercise 24-3}
+		\subsubsection*{a.}
+			可作出如下转化：
+			\begin{displaymath}
+				R[i_1,i_2]\bullet R[i_2,i_3]\bullet\cdots\bullet R[i_{k-1},i_k]\bullet R[i_k,i_1]>1 
+			\end{displaymath}
+			\begin{displaymath}
+				\ln(R[i_1,i_2])+\ln(R[i_2,i_3])+\cdots+\ln(R[i_{k-1},i_k])+\ln(R[i_k,i_1])>0
+			\end{displaymath}
+			\begin{displaymath}
+			-\ln(R[i_1,i_2])-\ln(R[i_2,i_3])-\cdots-\ln(R[i_{k-1},i_k])-\ln(R[i_k,i_1])<0
+			\end{displaymath}
+			我们可以通过BELLMAN-FORD算法来检验是否存在负权重的环，因为，从这个不等式可以看出：图中有负权重的环等价于存在不等式对应的这种套利情况。\\
+			由于BELLMAN-FORD算法的运行时间为$O(VE)$，所以该算法的运行时间为$O(VE)$。
+		\subsubsection*{b.}
+			首先用$a$中的算法来判断是否存在这种的一种序列，如果不存在，无需打印；如果存在，则需要进一步打印其中的一种序列。
+			关键在于找出图中的负权重的环。首先调用BELLMAN-FORD算法，同时记录每一个结点的$d$值；然后再relax每个结点足够多次，若某结点的$d$值仍然在减少，则其属于某一个负权重的环。将这些$d$值为$-\infty$的结点标记，找出它们其中的一个连通图，便是这样的一个序列.
+			
+\end{document}

@@ -1,0 +1,372 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{%
+	\CJKfamily{gbsn}%
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第7周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{28.1-2}
+			\textbf{解：}
+				$\left [\begin{matrix}
+			4 & -5 & 6 \\
+			8 & -6 & 7 \\
+			12 & -7 & 12  
+			\end{matrix}\right] \newline\newline = \left [\begin{matrix}
+			4 & -5 & 6 \\
+			2 & 4 & -5 \\
+			3 & 8 & -6  
+			\end{matrix}\right] = \left [\begin{matrix}
+			4 & -5 & 6 \\
+			2 & 4 & -5 \\
+			3 & 2 & 4  
+			\end{matrix}\right] \newline\newline = \left [\begin{matrix}
+			1 & 0 & 0 \\
+			2 & 1 & 0 \\
+			3 & 2 & 1  
+			\end{matrix}\right] \left [\begin{matrix}
+			4 & -5 & 6 \\
+			0 & 4 & -5 \\
+			0 & 0 & 4  
+			\end{matrix}\right]$\\
+			其中$L = \left [\begin{matrix}
+			1 & 0 & 0 \\
+			2 & 1 & 0 \\
+			3 & 2 & 1  
+			\end{matrix}\right]$\\
+			$U = \left [\begin{matrix}
+			4 & -5 & 6 \\
+			0 & 4 & -5 \\
+			0 & 0 & 4  
+			\end{matrix}\right]$
+			\section*{28.1-3}
+			\textbf{解：}
+			$\left [\begin{matrix}
+			1 & 5 & 4 \\
+			2 & 0 & 3 \\
+			5 & 8 & 2  
+			\end{matrix}\right] \rightarrow \left [\begin{matrix}
+			5 & 8 & 2 \\
+			2 & 0 & 3 \\
+			1 & 5 & 4  
+			\end{matrix}\right] \newline \rightarrow \left [\begin{matrix}
+			5 & 8 & 2 \\
+			0.4 & -3.2 & 2.2 \\
+			0.2 & 3.4 & 3.6  
+			\end{matrix}\right] \rightarrow \left [\begin{matrix}
+			5 & 8 & 2 \\
+			0.2 & 3.4 & 3.6 \\
+			0.4 & -3.2 & 2.2  
+			\end{matrix}\right] \newline \rightarrow \left [\begin{matrix}
+			5 & 8 & 2 \\
+			0.2 & 3.4 & 3.6 \\
+			0.4 & -\frac{16}{17} & \frac{95}{17}  
+			\end{matrix}\right]$\\
+			于是可以得到	$P = \left [\begin{matrix}
+			0 & 0 & 1 \\
+			1 & 0 & 0 \\
+			0 & 1 & 0  
+			\end{matrix}\right],\newline L = \left [\begin{matrix}
+			1 & 0 & 0 \\
+			0.2 & 1 & 0 \\
+			0.4 & -\frac{16}{17} & 1  
+			\end{matrix}\right],
+			U = \left [\begin{matrix}
+			5 & 8 & 2 \\
+			0 & 3.4 & 3.6 \\
+			0 & 0 & \frac{95}{17}  
+			\end{matrix}\right]$\\
+			于是方程可转化为\begin{displaymath}
+				\left [\begin{matrix}
+				1 & 0 & 0 \\
+				0.2 & 1 & 0 \\
+				0.4 & -\frac{16}{17} & 1  
+				\end{matrix}\right]\left [\begin{matrix}
+				y_1\\ y_2 \\ y_3  
+				\end{matrix}\right] = \left [\begin{matrix}
+				5\\ 12 \\ 9  
+				\end{matrix}\right]
+			\end{displaymath}
+			因此\begin{displaymath}
+			y=\left [\begin{matrix}
+			5 \\ 11 \\ \frac{295}{17}
+			\end{matrix}\right]
+			\end{displaymath}
+			于是\begin{displaymath}
+			\left [\begin{matrix}
+			5 & 8 & 2 \\
+			0 & 3.4 & 3.6 \\
+			0 & 0 & \frac{95}{17}  
+			\end{matrix}\right]\left [\begin{matrix}
+			x_1\\ x_2 \\ x_3  
+			\end{matrix}\right] = \left [\begin{matrix}
+			y_1\\ y_2 \\ y_3  
+			\end{matrix}\right]
+			\end{displaymath}
+			解之得：\begin{displaymath}
+			x=\left [\begin{matrix}
+			-\frac{3}{19} \\ -\frac{1}{19} \\ \frac{59}{19} 
+			\end{matrix}\right]
+			\end{displaymath}
+			\section*{28.1-6}
+				\begin{proof}
+					对于任意的$n\ge1$，都存在$n\times n$的零矩阵，其可以表示如下：
+					\begin{displaymath}
+						\left [\begin{matrix}
+						0 & 0 & \cdots & 0 \\
+						0 & 0 & \cdots & 0 \\
+						\vdots & \vdots & \vdots & \vdots \\
+						0 & 0 & \cdots & 0  
+						\end{matrix}\right] = \left [\begin{matrix}
+						1 & 0 & \cdots & 0 \\
+						0 & 1 & \cdots & 0 \\
+						\vdots & \vdots & \vdots & \vdots \\
+						0 & 0 & \cdots & 1  
+						\end{matrix}\right] \left [\begin{matrix}
+						0 & 0 & \cdots & 0 \\
+						0 & 0 & \cdots & 0 \\
+						\vdots & \vdots & \vdots & \vdots \\
+						0 & 0 & \cdots & 0   
+						\end{matrix}\right]
+					\end{displaymath}
+					左边即为下三角矩阵L，右边即为上三角矩阵U.又因为零矩阵是奇异矩阵，因此得证.
+				\end{proof}
+			\section*{28.1-7}
+				在LU-DECOMPOSITION中，当$k=n$时，有必要执行最外层的for循环迭代.因为若不执行，则$u_{nn}$会呈现原先的值而不是正确的$a_{nn}$\\
+				在LUP-DECOMPOSITION中，当$k=n$时，没必要执行最外层的for循环迭代.此时行交换是对最后一行自身的交换，排列矩阵为零矩阵，不影响；再者，第16行的for循环也不会执行。因此这层循环没有影响，故没有必要.
+			\section*{28.2-1}
+				\begin{proof}
+					首先，运行时间为$M(n)$的矩阵乘法可以推出$O(M(n))$的矩阵平方算法。因为对于$B=A^2$，相当于$B=A\cdot A$，也即一切矩阵平方都是矩阵乘法，故这一点容易得到；\\
+					其次，欲从运行时间为$S(n)$的矩阵平方算法推出$O(S(n))$的矩阵乘法。对于相乘的矩阵$A$和$B$，不妨构造矩阵\begin{displaymath}
+						C = \left [\begin{matrix}
+						A & I \\
+						B & 0 \\
+						\end{matrix}\right]
+					\end{displaymath}
+					于是\begin{displaymath}
+					C^2 = \left [\begin{matrix}
+					A^2+B & A \\
+					AB & B \\
+					\end{matrix}\right]
+					\end{displaymath}
+					此时矩阵的左下角即为$AB$.由此可知$S(2n)=O(S(n))$，又因为刚才矩阵平方算法的复杂度为$S(n)=O(n^2)$，又因为$S(n)=\Omega(n^2)$，故有$O(n^2)$的矩阵乘法，即$O(S(n))$的矩阵乘法.
+				\end{proof}
+			\section*{28.2-2}
+				\begin{proof}
+					不妨设$n=2^k$，将$A$矩阵分块如下：\begin{displaymath}
+						A = \left [\begin{matrix}
+						A_1 \\ A_2
+						\end{matrix}\right]
+					\end{displaymath}
+					设$A_1 = L_1U_1P_1$，其中$L_1$为$\frac{n}{2}\times\frac{n}{2}$，$U_1$为$\frac{n}{2}\times n$，$P_1$为$n\times n$.进一步矩阵分块，设$U_1=[B|C],A_2P_1^{-1}=[D|F]$，其中$B$与$D$都是$\frac{n}{2}\times\frac{n}{2}$的矩阵.由于$A$为非奇异矩阵，则$B$非奇异，设$G=F-DB^{-1}C$，有\begin{displaymath}
+						A = \left [\begin{matrix}
+						L_1 & 0 \\
+						DB^{-1} & I_{n/2} \\
+						\end{matrix}\right]\left [\begin{matrix}
+						B & C \\
+						0 & G \\
+						\end{matrix}\right]P_1
+					\end{displaymath}
+					再令$G=L_2U_2P_2$，并设$H=\left [\begin{matrix}
+					I_{n/2} & 0 \\
+					0 & P_2 \\
+					\end{matrix}\right]$，故有\begin{displaymath}
+						A = \left [\begin{matrix}
+						L_1 & 0 \\
+						DB^{-1} & L_2 \\
+						\end{matrix}\right]\left [\begin{matrix}
+						B & CP_2^{-1} \\
+						0 & U_2 \\
+						\end{matrix}\right]HP_1
+					\end{displaymath}
+					这便是$A$的一个$LUP$分解。计算过程中计算了子矩阵的LUP分解、矩阵的乘法以及逆矩阵运算，后两者时间上等价，由运行时间的相加关系知LUP分解的运行时间为$O(M(n))$\\
+					对于证明的另一半，我并没有找到好的解决方法……
+				\end{proof}
+			\section*{28.2-3}
+				\begin{proof}
+					由上题知LUP分解(或是LU分解)的运行时间为$O(M(n))$，则运行这个算法，并沿对角线将每个元素相乘，即是计算该矩阵的行列式，运行时间为$O(M(n))$.\\
+			        证$O(D(n))$暂想不出解决方法(如何将求一个行列式的值构造成矩阵的乘法？)
+				\end{proof}
+			\section*{28.3-1}
+				\begin{proof}
+					可以进行如下构造：设列向量$e_i$为除了在第$i$行为1，其他位置上都是0的向量；易知行向量$e_i^T$除了在第$i$列为1，其他位置上都是0.于是有\begin{displaymath}
+						e_i^TAe_i=\left [\begin{matrix}
+						0 & 0 & \cdots & 1 & \cdots & 0
+						\end{matrix}\right]\left [\begin{matrix}
+						a_{11} & a_{12} & \cdots & a_{1n} \\
+						a_{21} & a_{22} & \cdots & a_{2n} \\
+						\vdots & \vdots & \vdots & \vdots \\
+						a_{n1} & a_{n2} & \cdots & a_{nn}
+						\end{matrix}\right]\left [\begin{matrix}
+						0 \\ 0 \\ \vdots \\ 1 \\ \vdots \\ 0
+						\end{matrix}\right] 
+					\end{displaymath}
+					前两个矩阵相乘后结果为一个行向量，其中第$j$列都是$a_{ij}$，再与第三个矩阵相乘，可得唯一的数$a_{ii}$.因为$e_i^TAe_i>0$，因此$a_{ii}>0$，这对任意的$i\in [1,n]$都成立.因此对称正定矩阵的对角线上所有元素都为正数.
+				\end{proof}
+			\section*{28.3-3}
+				\begin{proof}
+					可以进行如下构造：设列向量$e_i,e_i$为除了在第$i,j$行为1，其他位置上都是0的向量(其中$i\neq j$)；于是有\begin{displaymath}
+					(e_i-e_j)^TA(e_i-e_j)=
+					\end{displaymath}
+					\begin{displaymath}
+					(e_i-e_j)^T\left [\begin{matrix}
+					a_{11} & a_{12} & \cdots & a_{1n} \\
+					a_{21} & a_{22} & \cdots & a_{2n} \\
+					\vdots & \vdots & \vdots & \vdots \\
+					a_{n1} & a_{n2} & \cdots & a_{nn}
+					\end{matrix}\right]\left [\begin{matrix}
+					0 \\ \cdots \\ -1 \\ \vdots \\ 1 \\ \vdots \\ 0
+					\end{matrix}\right] 
+					\end{displaymath}
+				\end{proof}
+				前两个矩阵相乘后结果为一个除了第$j$列为-1，第$i$列为1，其他都为0的行向量，再与第三个矩阵相乘，结果为$a_{ii}+a_{jj}-a_{ij}-a_{ji}=a_{ii}+a_{jj}-2a_{ij}$.假设矩阵各元素中，最大值不在对角线上，则不妨设$a_{ij}$为最大值，此时$a_{ij}\ge a_{ii},a_{ij}\ge a_{jj}$，此时得到$(e_i-e_j)^TA(e_i-e_j)\le0$，这与正定矩阵的定义矛盾.因此最大元素存在于对角线上.
+			\section*{28-1}
+			\subsection*{a.}
+				\begin{displaymath}
+					A = \left [\begin{matrix}
+					1 & -1 & 0 & 0 & 0 \\
+					-1 & 2 & -1 & 0 & 0 \\
+					0 & -1 & 2 & -1 & 0 \\
+					0 & 0 & -1 & 2 & -1 \\
+					0 & 0 & 0 & -1 & 2
+					\end{matrix}\right] 
+					\end{displaymath}
+					\begin{displaymath} 
+					= \left [\begin{matrix}
+					1 & -1 & 0 & 0 & 0 \\
+					-1 & 1 & -1 & 0 & 0 \\
+					0 & -1 & 2 & -1 & 0 \\
+					0 & 0 & -1 & 2 & -1 \\
+					0 & 0 & 0 & -1 & 2
+					\end{matrix}\right]
+					\end{displaymath}
+					\begin{displaymath}
+					= \left [\begin{matrix}
+					1 & -1 & 0 & 0 & 0 \\
+					-1 & 1 & -1 & 0 & 0 \\
+					0 & -1 & 1 & -1 & 0 \\
+					0 & 0 & -1 & 2 & -1 \\
+					0 & 0 & 0 & -1 & 2
+					\end{matrix}\right] 
+					\end{displaymath}
+					\begin{displaymath}
+					= \left [\begin{matrix}
+					1 & -1 & 0 & 0 & 0 \\
+					-1 & 1 & -1 & 0 & 0 \\
+					0 & -1 & 1 & -1 & 0 \\
+					0 & 0 & -1 & 1 & -1 \\
+					0 & 0 & 0 & -1 & 2
+					\end{matrix}\right]
+					\end{displaymath}
+					\begin{displaymath}
+					= \left [\begin{matrix}
+					1 & -1 & 0 & 0 & 0 \\
+					-1 & 1 & -1 & 0 & 0 \\
+					0 & -1 & 1 & -1 & 0 \\
+					0 & 0 & -1 & 1 & -1 \\
+					0 & 0 & 0 & -1 & 1
+					\end{matrix}\right] 
+				\end{displaymath}
+				因此\begin{displaymath}
+					L = \left [\begin{matrix}
+					1 & 0 & 0 & 0 & 0 \\
+					-1 & 1 & 0 & 0 & 0 \\
+					0 & -1 & 1 & 0 & 0 \\
+					0 & 0 & -1 & 1 & 0 \\
+					0 & 0 & 0 & -1 & 1
+					\end{matrix}\right] 
+				\end{displaymath}
+				\begin{displaymath}
+				U = \left [\begin{matrix}
+				1 & -1 & 0 & 0 & 0 \\
+				0 & 1 & -1 & 0 & 0 \\
+				0 & 0 & 1 & -1 & 0 \\
+				0 & 0 & 0 & 1 & -1 \\
+				0 & 0 & 0 & 0 & 1
+				\end{matrix}\right] 
+				\end{displaymath}
+			\subsection*{b.}
+				先求$Ly=Pb$，即\begin{displaymath}
+					\left [\begin{matrix}
+					1 & 0 & 0 & 0 & 0 \\
+					-1 & 1 & 0 & 0 & 0 \\
+					0 & -1 & 1 & 0 & 0 \\
+					0 & 0 & -1 & 1 & 0 \\
+					0 & 0 & 0 & -1 & 1
+					\end{matrix}\right]\left [\begin{matrix}
+						y_1 \\ y_2 \\ y_3 \\ y_4 \\ y_5
+					\end{matrix}\right]=\left [\begin{matrix}
+					1 \\ 1 \\ 1 \\ 1 \\ 1
+					\end{matrix}\right]
+				\end{displaymath}
+				求得\begin{displaymath}
+					y = \left [\begin{matrix}
+					1 \\ 2 \\ 3 \\ 4 \\ 5
+					\end{matrix}\right]
+				\end{displaymath}
+				然后$Ux=y$，也即\begin{displaymath}
+					\left [\begin{matrix}
+					1 & -1 & 0 & 0 & 0 \\
+					0 & 1 & -1 & 0 & 0 \\
+					0 & 0 & 1 & -1 & 0 \\
+					0 & 0 & 0 & 1 & -1 \\
+					0 & 0 & 0 & 0 & 1
+					\end{matrix}\right]\left [\begin{matrix}
+					x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5
+					\end{matrix}\right]=\left [\begin{matrix}
+					1 \\ 2 \\ 3 \\ 4 \\ 5
+					\end{matrix}\right]
+				\end{displaymath}
+				因此解为\begin{displaymath}
+					x = \left [\begin{matrix}
+					15 \\ 14 \\ 12 \\ 9 \\ 5
+					\end{matrix}\right]
+				\end{displaymath}
+			\subsection*{c.}
+				将矩阵$A^{-1}$视为5个列向量$x_1,x_2,x_3,x_4,x_5$，则有\begin{displaymath}
+					Ax_1=[1,0,0,0,0]^T
+				\end{displaymath}
+				可以得到\begin{displaymath}
+					x_1=[5,4,3,2,1]^T
+				\end{displaymath}
+				同理可求出$x_2,x_3,x_4,x_5$，最后可求得逆矩阵为\begin{displaymath}
+					\left [\begin{matrix}
+					5 & 4 & 3 & 2 & 1 \\
+					4 & 4 & 3 & 2 & 1 \\
+					3 & 3 & 3 & 2 & 1 \\
+					2 & 2 & 2 & 2 & 1 \\
+					1 & 1 & 1 & 1 & 1
+					\end{matrix}\right]
+				\end{displaymath}
+			\subsection*{d.}
+				\begin{proof}
+					首先，对三对称矩阵来说，第7-10行只需要交换至多两次以获得最大值，故缩为$O(1)$；其次，第13-15行交换是有限常数次数，也为$O(1)$的运行时间；对于第16-19行，同一列上至多有三个元素，故循环次数为常数次，也为$O(1)$.因此，对于三对称矩阵来说，它的LUP分解运行时间为$O(n)$，易知LU分解的运行时间也为$O(n)$.以求逆矩阵$A^{-1}$为基础的算法，因为需要记录逆矩阵中每一个元素的值，这个过程需要$\Theta(n^2)$的时间，加之算法的其他部分，故在最坏情况下运行时间可以达到$\Omega(n^2)$.
+				\end{proof}
+			\subsection*{e.}
+				\begin{proof}
+					由(a)中可知，LUP算法循环体中的各部分运行时间都为$O(1)$，故整体运行时间为$O(n^2)$，在forward和backward的过程中，由于$U$与$L$中每一行每一列同样只有很少的有限个非零元素，在计算$Ly=Pb$以及$Ux=y$对每一个元素$x_i$只需$O(1)$时间，共需要$O(n)$的时间.综上，算法运行时间为$O(n)$.
+				\end{proof}
+		\end{SChinese}
+	\end{CJK}
+\end{document}

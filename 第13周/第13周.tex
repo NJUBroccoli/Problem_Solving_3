@@ -1,0 +1,164 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{
+	\CJKfamily{gbsn}
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第13周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{TC Chapter 31}
+			\subsection*{31.1-12}
+				\begin{algorithm}
+					\caption{BIT-DIVISION(a,b)}
+					\begin{algorithmic}[1]
+						\STATE $BitNum_a$ and $BitNum_b$ is the bit numbers of $a$ and $b$ \\
+						\STATE $quotient\leftarrow0$ \\
+						\FOR {$i\leftarrow BitNum_a-BitNum_b$ \TO 0}
+						\STATE $m\leftarrow(b<<i)$ \\
+						\IF {$m\le a$}
+						\STATE $quotient\leftarrow quotient+(1<<i)$ \\
+						\STATE $a\leftarrow a-m$ \\
+						\ENDIF
+						\ENDFOR
+						\RETURN $quotient$
+					\end{algorithmic}
+				\end{algorithm}
+				算法1的复杂度为$\Theta(\beta^2)$，余数只需计算$a-b*quotient$即可，乘法需$\Theta(\beta^2)$，加法需$\Theta(\beta)$，因此也只需$\Theta(\beta^2)$.
+			\subsection*{31.1-13}
+				\begin{algorithm}
+					\caption{BIT-CONVERT($\beta,a[],p,r,left,bit$)}
+					\begin{algorithmic}[1]
+						\IF {$p<r$}
+						\STATE $q\leftarrow(p+r)/2$ \\
+						\STATE BIT-CONVERT($a,p,q,0,bit)$ \\
+						\STATE BIT-CONVERT($a,q+1,r,1,bit)$ \\
+						\ENDIF
+						\IF {$p\le r$ and $bit<\beta$}
+						\IF {$left==0$}
+						\RETURN BIT-MERGE($a,p,q,bit$)
+						\ENDIF
+						\ELSE
+						\RETURN BIT-MERGE($a,q+1,r,bit$)
+						\ENDIF
+					\end{algorithmic}
+				\end{algorithm}
+			\begin{algorithm}
+				\caption{BIT-MERGE($a[],p,r,bit$)}
+				\begin{algorithmic}[1]
+					\STATE $ret\rightarrow0$ \\
+					\IF {$p\le bit$}
+					\STATE $p\leftarrow bit+1$ \\
+					\ENDIF
+					\FOR {$i\leftarrow p$ \TO $r$}
+					\STATE $bit\leftarrow bit+1$ \\
+					\STATE $ret\leftarrow ret+(a[i]<<i)$ \\
+					\ENDFOR
+					\RETURN $ret$
+				\end{algorithmic}
+			\end{algorithm}
+				\begin{proof}
+					根据算法2和算法3，可以得到递推式：$T(\beta)=2T(\frac{\beta}{2})+M(\frac{\beta}{2})$，由主定理可知算法运行时间是$\Theta(M(\beta)\lg\beta)$.
+				\end{proof}
+			\subsection*{31.2-4}
+				见算法4.
+				\begin{algorithm}
+					\caption{EUCLID-ITERATIVE($a,b$)}
+					\begin{algorithmic}[1]
+						\WHILE {$b>0$}
+						\STATE $temp\leftarrow a$ \\
+						\STATE $a\leftarrow b$ \\
+						\STATE $b\leftarrow temp\mod b$ \\
+						\ENDWHILE
+						\RETURN $a$
+					\end{algorithmic}
+				\end{algorithm}
+			\subsection*{31.2-5}
+				\begin{proof}
+					由定理31.11可知，若$k$满足$b<F_{k+1}=\frac{\Phi^k}{\sqrt{5}}$，则EUCLID($a,b$)的递归调用次数少于$k$次.对于$k=1+\log_\Phi b$来说，有$\frac{\Phi^k}{\sqrt{5}}=\frac{\Phi^{2+\log_\Phi b}}{\sqrt{5}}=\frac{b\cdot\Phi^2}{\sqrt{5}}$，由于$\frac{\Phi^2}{\sqrt{5}}=\frac{3\sqrt{5}+5}{10}>1$，因此$b<\frac{\Phi^k}{\sqrt{5}}$，所以EUCLID($a,b$)至多执行$1+\log_\Phi b$次递归调用即可.\\
+					若把界改进为$1+\log_\Phi(b/\textrm{gcd}(a,b))$，首先证明引理；如果$a>b\ge1$并且EUCLID($a,b$)执行了$k\ge1$次递归调用，则$a\ge\textrm{gcd}(a,b)F_{k+2},b\ge\textrm{gcd}(a,b)F_{k+1}$.当$k=1$时，有$a\ge2\textrm{gcd}(a,b),b=\textrm{gcd}(a,b)$.假设当$k-1$时成立，则当$k$时，第一个指令是EUCLID$(b,a\mod b)$，因此递归$k-1$次，所以有$b\ge\textrm{gcd}(a,b)F_{k+1},a\mod b\ge\textrm{gcd}(a,b)F_k$，于是$a\ge b+(a\mod b)\ge\textrm{gcd}(a,b)(F_{k+1}+F_k)=\textrm{gcd}(a,b)F_{k+2}$.于是得证.由此，当$k=1+\log_\Phi(b/\textrm{gcd}(a,b))$时，即有$b\textrm{gcd}(a,b)<F_{k+1}$，至多执行$k$步即可.
+				\end{proof}
+			\subsection*{31.2-6}
+				因为\[\textrm{gcd}(F_{k+1},F_k)=\textrm{gcd}(F_k,F_{k-1})\]且\[\textrm{gcd}(F_{k+1},F_k)=1,\textrm{floor}(\frac{F_{k+1}}{F_k})=1\]算法返回的$d$值必为1，下面讨论算法返回的$x,y$值.通过$(F_4,F_3)$返回$(1,F_1,-F_2)$，$(F_5,F_4)$返回$(1,-F_2,F_3)$可推测：\\$(F_{k+1},F_k)$返回$(1,(-1)^{k+1}F_{k-2},(-1)^kF_{k-1})$.\\假设在$k-1$的情况下成立，也即$(F_k,F_{k-1})$返回$(1,(-1)^{k}F_{k-1},(-1)^{k-1}F_{k-2})$，则在$k$的情况下，$(F_{k+1},F_k)$返回值为\\$ (1,(-1)^{k-1}F_{k-2},(-1)^kF_{k-3})\\=(1,(-1)^{k-1}F_{k-2},(-1)^k(F_{k-3}+F_{k-2}))\\=(1,(-1)^{k+1}F_{k-2},(-1)^kF_{k-1})$，得证.\\
+				综上所述，当$k=1$时返回$(1,0,1)$，当$k=2$时返回$(1,0,1)$，当$k\ge3$时，返回$(1,(-1)^{k+1}F_{k-2},(-1)^kF_{k-1})$.
+			\subsection*{31.2-9}
+				\begin{proof}
+				\begin{enumerate}[(1)]
+					\item 若$n_1,n_2,n_3,n_4$两两互质，则$\textrm{gcd}(n_1,n_2)=1,\textrm{gcd}(n_1,n_4)=1$，因此$\textrm{gcd}(n_1,n_2n_4)=1$，同理可知$\textrm{gcd}(n_3,n_2n_4)=1$，由此可得$\textrm{gcd}(n_1n_3,n_2n_4)=1$，同理可证$\textrm{gcd}(n_1n_2,n_3n_4)=1$. \\
+					\item 若$\textrm{gcd}(n_1n_2,n_3n_4)=\textrm{gcd}(n_1n_3,n_2n_4)=1$，则存在$x,y\in\mathbb{Z}$，使得$n_1n_2x+n_3n_4y=1$，根据不同的结合如：$n_1(n_2x)+n_3(n_4y)=1,n_1(n_2x)+n_4(n_3y)=1$可依次推出$(n_1,n_3),(n_1,n_4),(n_2,n_3),(n_2,n_4)$互质，由另一个条件可推出$(n_1,n_2),(n_3,n_4)$互质，由此可知$n_1,n_2,n_3,n_4$两两互质.
+					\item 由此证得充分必要性.
+				\end{enumerate}
+				\end{proof}
+			\subsection*{31.3-5}
+				\begin{proof}
+					为了证明函数$f_a$是$\mathbb{Z}_n^*$的一个置换，只要证明$f_a$是$\mathbb{Z}_n^*$到$\mathbb{Z}_n^*$的双射.首先像与原像的元素个数相同，故只要证明对于每一个$y\in\mathbb{Z}_n^*$都存在某$x\in\mathbb{Z}_n^*$使得$f_a(x)=y$.因为$\mathbb{Z}_n^*$是阿贝尔群，存在逆元，故$f_a(a^{-1}y)=aa^{-1}y\mod n=y\mod n=y$，由此可知$f_a$满足双射，所以函数$f_a$是$\mathbb{Z}_n^*$的一个置换.
+				\end{proof}
+			\subsection*{31.4-2}
+				\begin{proof}
+					因为$ax\equiv ay(\mod n)$，所以$a(x-y)\equiv0(\mod n)$，又因为$\textrm{gcd}(a,n)=1$，所以$n$整除$a$当且仅当$n=1$，此时显然有$x\equiv y(\mod1)$.若$n\ge2$，则因为$n$整除$(x-y)$，所以有$x\equiv y(\mod n)$，得证.
+				\end{proof}
+				反例：$a=2,n=6$，此时方程$2x\equiv2y(\mod6)$的一个解为$x=2,y=5$，然而$2\equiv5(\mod6)$是不成立的.因此条件$\textrm{gcd}(a,n)=1$是必要的.
+			\subsection*{31.4-3}
+				仍然能输出正确的结果
+				\begin{proof}
+					\[ax_0\equiv a(x'(b/d)\mod(n/d)(\mod n)\] 
+					\[\equiv a(x'(b/d)-t(n/d))(\mod n)\]
+					\[\equiv d\cdot b/d-n(t/d)(\mod n)\]
+					\[\equiv b(\mod n)\]
+					因此仍然可以得到原先的解集.
+				\end{proof}
+			\subsection*{31.5-2}
+				由题意知，$x\equiv1(\mod9)$ \\ $x\equiv2(\mod8)$ \\ $x\equiv3(\mod7)$\\由$c_1=56(5\mod9)=280$\\$c_2=63(7\mod8)=441$\\$c_3=72(4\mod7)=288$\\所以$a=1\cdot280+2\cdot441+3\cdot288$，故$a\equiv10(\mod504)$，因此$a$的通解为$10+504k,k\in\mathbb{Z}$.
+			\subsection*{31.5-3}
+				\begin{proof}
+					由定理31.27的定义可知，欲证题中的对应关系成立，即证$(a^{-1}\mod n)\mod n_i=a_i^{-1}\mod n_i$，即证\[a^{-1}\mod n\equiv a_i^{-1}(\mod n_i)\]
+					即证\[aa^{-1}\mod n\equiv aa_i^{-1}(\mod n_i)\]
+					即证\[a\equiv a_i(\mod n_i)\]
+					又因为$a_i=a\mod n_i$，所以即证\[a\equiv a\mod n_i(\mod n_i)\]
+					这是显然的，因此得证.
+				\end{proof}
+			\subsection*{31.6-2}
+				\begin{algorithm}
+					\caption{MODULAR-EXPO($a,b,n$)}
+					\begin{algorithmic}[1]
+						\STATE $d\leftarrow1$ \\
+						\STATE $t\leftarrow a$ \\
+						\STATE let $\langle b_k,b_{k-1},\cdots,b_0\rangle$ be the binary representation of $b$ \\
+						\FOR {$i\leftarrow0$ \TO $k$}
+						\IF {$b_i==1$}
+						\STATE $d\leftarrow t\cdot d\mod n$ \\
+						\ENDIF
+						\STATE $t\leftarrow t\cdot t\mod n$\\
+						\ENDFOR
+						\RETURN $d$	
+					\end{algorithmic}
+				\end{algorithm}
+			\subsection*{31.6-3}
+				由欧拉定理可知$a^{\Phi(n)}\equiv1(\mod n)$，则可知$a^{-1}\equiv a^{\Phi(n)-1}(\mod n)$，因此只需要调用MODULAR-EXPONENTIATION($a,\Phi(n)-1,n$)即可计算出$a^{-1}\mod n$.
+		\end{SChinese}
+	\end{CJK}
+\end{document}

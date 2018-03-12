@@ -1,0 +1,86 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\newenvironment{SChinese}{%
+	\CJKfamily{gbsn}%
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第4周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{GC Chapter 7}
+				\subsection*{7.1}
+				\subsubsection*{(a)}
+					\begin{proof}
+						假设$D$不是强连通图，则存在两个顶点$v_1,v_2$，使得不存在一条从$v_1$到$v_2$的路径.由题意知，图$D-v_1$是强连通图，则必存在一个顶点$v_3$，从$v_3$到$v_2$存在一条路径$P_1$；同理，图$D-v_2$是强连通图，则从$v_1$到$v_3$存在一条路径。由此可知从$v_1$到$v_2$存在一条路径，与假设矛盾。因此，$D$是强连通的。
+					\end{proof}
+				\subsubsection*{(b)}
+					\begin{proof}
+						假设存在满足这一性质的四阶定向图$D$.易知三阶定向强连通图是唯一(两两首尾相接)，则若要满足题意，则$D$去掉任意一个顶点后的三阶图都必须是该图.设该三阶图的顶点为$v_1,v_2,v_3$，边为$(v_1,v_2),(v_2,v_3),(v_3,v_1)$，则另有一顶点$v_4$，在三个顶点中存在一顶点与$v_4$直接相连，不妨设为$v_1$，则存在$(v_1,v_4)$.若删去$v_1$且仍满足余下三顶点构成三阶定向强连通图，则必存在$(v_3,v_4),(v_4,v_2)$，此时若在$D$中删去$v_3$，剩下的边为$(v_1,v_4),(v_4,v_2),(v_1,v_2)$，不满足三阶强连通图，故矛盾。由此得证。
+					\end{proof}
+				\subsection*{7.2}
+					\begin{proof}
+						首先，假设$G$是一个欧拉图，则每个顶点的度数都为偶数，延着一个欧拉环给每一条边定向，且方向与环路径方向一致。由于每次经过一个顶点，都会同时增加一个入度和一个出度，由此可推出对任意的顶点，都有入度等于出度，便能构成一个欧拉定向环，得证；\\
+						再者，假设$G$存在欧拉定向环，则对每一个顶点都有入度等于出度 ，则该顶点的总度数必为偶数，将每一条定向边添加一条相反方向的边，便构成一个无向图，且每个顶点度数都为偶数，因此是欧拉图。
+					\end{proof}
+				\subsection*{7.4}
+					\begin{proof}
+						假设图$D$是强连通的，则对于其中任意两个顶点$v_1,v_2$，存在路径$P_1$，使得$v_1\rightarrow P_1\rightarrow v_2$，也存在路径$P_2$，使得$v_2\rightarrow P_2\rightarrow v_1$.若$P_1=P_2$，则将所有边的方向反向对其连通性没有影响，依然是强连通；若$P_1\neq P_2$，将所有边反向时，则有$v_1\rightarrow P_2\rightarrow v_2$且$v_2\rightarrow P_1\rightarrow v_1$，因此仍然是强连通图；\\
+						充分性同理可证。
+					\end{proof}
+				\subsection*{7.5}
+					\begin{proof}
+					首先，若有向图$D$是强连通，设$A,B$的诱导图分别为$G(A),G(B)$.则对$D$中任意两点$v_1,v_2$都有路径使$v_1$连通到$v_2$，或使$v_2$连通到$v_1$.若$v_1,v_2\in G(A)$或$v_1,v_2\in G(B)$，由于两者在同一分量中，必有路径使之相连；若$v_1\in G(A),v_2\in G(B)$，则必存在两个顶点，使得$v_1\rightarrow\cdots\rightarrow v_3\rightarrow v_4\rightarrow\cdots\rightarrow v_2$，其中$v_3\in G(A),v_4\in G(B)$，且$v_1$可能等于$v_3$，$v_2$可能等于$v_4$，则$(v_3,v_4)$即为从$G(A)$到$G(B)$的一个有向边，反之从$G(B)$到$G(A)$亦然\\
+					其次，若由割边集分割而成的两个连通分量$G(A)$和$G(B)$，存在由$G(A)$指向$G(B)$的边以及由$G(B)$指向$G(A)$的边，分别设其为$(v_1,v_2)$和$(v_3,v_4)$.对于$D$中的任意两个顶点$(u,v)$，若它们在同一个连通分量中，则显然互相连通，若$u\in G(A),v\in G(B)$，则有路径$u\rightarrow\cdots\rightarrow v_1\rightarrow v_2\rightarrow\cdots\rightarrow v$与$v\rightarrow\cdots\rightarrow v_3\rightarrow v_4\rightarrow\cdots\rightarrow u$，由此可推知$D$是强连通图.
+					\end{proof}
+				\subsection*{7.9}
+					\begin{proof}
+						首先，若竞赛图$T$是可迁的，假设$(u,v)$是$T$中的弧，$v$连接到的顶点集为$A$，则根据可迁性，对$A$中每一个顶点$a$，都有弧$(u,a)$，于是可得$u$的出度$od(u)\ge 1+od(v)$，因此每两个顶点的出度不同。\\
+						再者，若竞赛图$T$中每两个顶点的出度都不同，设共有n个顶点，它们的出度在集合$\{n-1,n-2,\cdots,1,0\}$中，设$od(v_i)=n-i$，其中$1\le i\le n$.对于任意顶点$v_i$，其邻接顶点为$v_{i+1},v_{i+2},\cdots,v_{n})$，对于$v_{i+1}$，其邻接顶点为$v_{i+2},\cdots,v_{n}$，由此可知若$(v_{i},v_{i+1}\in E)$且$(v_{i+1},v_{i+2})\in E$，则有$(v_i,v_{i+2})\in E$，满足可迁性，因此竞赛图$T$是可迁的.
+					\end{proof}
+				\subsection*{7.10}
+					\begin{proof}
+						设$u$到$v$的最短路径为$u->v_1\rightarrow v_2\rightarrow\cdots\rightarrow v_{k-1}\rightarrow v$，则不存在弧$(u,v_2),(u,v_3),\cdots,(u,v_{k-1}),(u,v)$，否则便有更短的路径，因此可得$od(u)\le (n-1)-(k-1)=n-k$，由此知$id(u)=n-1-od(u)\ge k-1$.得证.
+					\end{proof}
+				\subsection*{7.13}
+					\begin{proof}
+						对于竞赛图中任意两个顶点$u,v$，要么$(u,v)\in E$，要么$(v,u)\in E$，不妨设$\overrightarrow{d}(u,v)=1,\overrightarrow{d}(u,v)>1$，因此两者不等.
+					\end{proof}
+				\subsection*{7.14}
+					\subsubsection*{(a)}
+						\begin{proof}
+							若顶点个数$n$为奇数，只要保证所有顶点的出度都为$\frac{n-1}{2}$即可.若$n=1$，则必然成立；若$n=3$，则只要成同向环即可，每个顶点出度为1.对于更多顶点的图，只要保证每个顶点出度为$\frac{n-1}{2}$，如此入度也为$\frac{n-1}{2}$，如此每个球队胜场与负场相同，同样获得第一名.
+						\end{proof}
+					\subsubsection*{(b)}
+						\begin{proof}
+							若顶点个数$n$为偶数，假设存在所有球队都获得第一名的结局，则所有球队的出度都相等，且入度也相等.设每个顶点的出度为$o$，入度为$i$，有$o+i=n-1$.由有向图第一定理可知$o\cdot n=\frac{n(n-1)}{2}$，得$o=\frac{n-1}{2}$，而因为$n$为偶数，所以$o$不为整数，而这显然不可能.因此不存在这种情况.
+						\end{proof}
+				\subsection*{7.15}
+					\begin{proof}
+						用数学归纳法证明如下：\\
+						(1)\quad 当$k=3$时，由定理7.9可知其成立；\\
+						(2)\quad 假设当$k=t(3\le t\le n-1)$时，结论成立，也即$T$中含有一个长度为$k$得圈；
+						(3)\quad 由上述假设，当$k=t+1$时，设此时长度为$k$的圈内有$v_1,v_2,\cdots,v_k,v_1$，若有一点$u$异于圈内之点，且被圈内一点邻接，也邻接到圈内另一点，则圈可扩充为$v_1,v_2,\cdots,v_i,u,v_{i+1},\cdots,v_k,v_1$，因此存在一个长度为$k+1$的圈.\\
+						假设不是上述情况，而是：不在圈内的顶点要么全部邻接到圈上，要么被圈上顶点邻接.设$a$符合前一种情况，$b$符合后一种情况.由于是强连通图，故在圈内存在一点$c$，使得扩充成更大圈$v_1,v_2,\cdots,v_i,b,a,v_{i+1},\cdots,v_k,v_1$且去掉$c$，因此存在一个长度为$k+1$的圈. \\
+						(4)\quad 综上所述，结论成立.
+					\end{proof}
+		\end{SChinese}
+	\end{CJK}
+\end{document}

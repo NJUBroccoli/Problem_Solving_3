@@ -1,0 +1,226 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\allowdisplaybreaks[4]
+\usetikzlibrary{arrows,graphs}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphs.standard}
+\newenvironment{SChinese}{%
+	\CJKfamily{gbsn}%
+	\CJKtilde
+	\CJKnospace}{}
+\pagestyle{fancy}
+\fancyhead[L]{Problem Solving III}
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第8周作业}
+			\author{黄奕诚 161220049}
+			\maketitle
+			
+			\section*{29.1-4}
+				\subsection*{将最小化问题转化为最大化，即目标函数系数取负}
+				最大化：$-2x_1-7x_2-x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_1 &  &  & - & x_3 & = & 7 \\
+				3x_1 & + & x_2 &  &  & \ge & 24 \\
+				 &  & x_2 &  &  & \ge & 0 \\
+				 &  &  &  & x_3 & \le & 0 
+				\end{matrix}
+				\end{displaymath}
+				\subsection*{将$x_3$转化为$-x_3$}
+				最大化：$-2x_1-7x_2+x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_1 &  &  & + & x_3 & = & 7 \\
+				3x_1 & + & x_2 &  &  & \ge & 24 \\
+				&  &  & x_2, & x_3 & \ge & 0 
+				\end{matrix}
+				\end{displaymath}
+				\subsection*{将$x_1$替换成$x_1'-x_1''$}
+				最大化：$-2x_1'+2x_1''-7x_2+x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_1' & - & x_1'' & + & x_3 & = & 7 \\
+				3x_1' & - & 3x_1'' & + & x_2 & \ge & 24 \\
+				& x_1', & x_1'', & x_2, & x_3 & \ge & 0 
+				\end{matrix}
+				\end{displaymath}
+				\subsection*{对不等式的符号进行处理}
+				最大化：$-2x_1'+2x_1''-7x_2+x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_1' & - & x_1'' & + & x_3 & \le & 7 \\
+				-x_1' & + & x_1'' & - & x_3 & \le & -7 \\
+				-3x_1' & + & 3x_1'' & - & x_2 & \le & 24 \\
+				& x_1', & x_1'', & x_2, & x_3 & \ge & 0 
+				\end{matrix}
+				\end{displaymath}
+			\section*{29.1-5}
+				\subsection*{首先逐步将线性规划转化为标准型}
+				最大化：$2x_1-6x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_1 & + & x_2 & - & x_3 & \le & 7 \\
+				-3x_1 & - & x_2 &  &  & \le & -8 \\
+				x_1 & - & 2x_2 & - & 3x_3 & \le & 0 \\
+				&  & x_1, & x_2, & x_3 & \ge &  0 \\
+				\end{matrix}
+				\end{displaymath}
+				令$x_4 = 7-x_1-x_2+x_3,x_5=-8+3x_1+x_2,x_6=-x_1+2x_2+3x_3$，于是松弛型即为：
+				最大化：$2x_1-6x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_4= & 7 & - & x_1 & - & x_2 & + & x_3\\
+				x_5= & -8 & + & 3x_1 & - & x_2 &\\
+				x_6= &   &   & -x_1 & + & 2x_2 & + & 3x_3 &\\
+				x_1, & x_2, & x_3, & x_4, & x_5, & x_6 & \ge & 0
+				\end{matrix}
+				\end{displaymath}
+				其中基本变量为$x_4,x_5,x_6$，非基本变量为$x_1,x_2,x_3$.
+			\section*{29.1-6}
+				\begin{proof}
+				由第二个不等式可知$-2x_1-2x_2\le-10$，也即$-x_1-x_2\le-5$，又由第一个不等式知$x_1+x_2\le2$，相加得$0\le-3$，显然不成立，因此该线性规划不可解.				\end{proof}
+			\section*{29.1-7}
+				\begin{proof}	
+				从特殊性考虑，取$x_1=2a,x_2=a$，则$x_1-x_2=a$，此时不等式为\begin{displaymath}
+					-3a\le-1 \\
+					-4a\le-2 \\
+					a\ge 0
+				\end{displaymath}
+				此时$a$的取值范围为$[\frac{1}{2},+\infty]$，右侧无界.也即可行域中直线$x_2=2x_1$不能被其它两条直线截断，因此该线性规划是无界的.
+			    \end{proof}
+			\section*{29.1-9}
+				例子如下：\\
+				最小化：$x_1+x_2$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				& x_1 & \ge & 1 \\
+				& x_2 & \ge & 0 \\
+				\end{matrix}
+				\end{displaymath}
+				此时显然可行区域无界，但有最佳目标值：1(此时$x_1=1,x_2=0$)
+			\section*{29.2-2}
+				线性规划如下：\\
+				最大化：$d_t$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+					d_t & \le & d_s & + & 3 \\
+					d_t & \le & d_y & + & 1 \\
+					d_x & \le & d_t & + & 6 \\
+					d_x & \le & d_y & + & 4 \\
+					d_x & \le & d_z & + & 7 \\
+					d_y & \le & d_s & + & 5 \\
+					d_y & \le & d_t & + & 2 \\
+					d_z & \le & d_x & + & 2 \\
+					d_z & \le & d_y & + & 6 \\
+					    &     & d_s & = & 0 
+				\end{matrix}
+				\end{displaymath}
+			\section*{29.2-3}
+				最短路径权值只需要改动目标函数即可，也即路径上所经过的结点的$d_i$之和，若能保证这个和取到最大值，则可以找出从源点$s$到所有顶点$v\in V$的最短路径权值.\\
+				最大化：$\sum_{v\in V}^{}d_v$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				d_v & \le & d_u & + & \omega(u,v) & \\
+				d_s & = & 0 &  & 
+				\end{matrix}
+				\end{displaymath}
+				其中第一个不等式中，$(u,v)\in E$
+			\section*{29.2-6}
+				按照26.3的方法，添加两个结点$s,t$，并把每条边的容量设为1，转化为最大流问题，于是：\\
+				最大化：$\sum_{v\in L}^{}f_sv$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				f_{uv} & \le & 1 \\
+				\sum_{v\in V}^{}f_{vu} & = & \sum_{v\in V}^{}f_{uv} \\
+				f_{uv} & \ge & 0
+				\end{matrix}
+				\end{displaymath}
+				其中对于第一个不等式，$u,v\in V$，对于第二个不等式，$u\in L \cup R$，对于第三个不等式，$u,v\in V$.
+			\section*{29.3-2}
+				\begin{proof}
+					欲证$v$不减，即证$c_e\hat{b}_e\ge0$，即证$c_e\ge0$并且$\hat{b}_e\ge0$.对于$c_e$，由于$e$是自选的，只要选择一个$e$保证$c_e>0$即可；对于$\hat{b}_e$，在PIVOT第3行中有$\hat{b}_e=\frac{b_l}{a_{le}}$.在引理29.2中可知$b_l\ge0$，而$a_{le}$可以通过选择$l$来达到为正数.因此，SIMPLEX中第12行对PIVOT的调用不会减小$v$的值.
+				\end{proof}
+			\section*{29.3-3}
+				\begin{proof}
+					即证这两个松弛型的目标函数相同，并且可行解集相同.\\
+					首先证明它们的目标函数相同：目标函数的变化发生在PIVOT中第14-17行，它基本变量代替了非基本变量，而基本变量与非基本变量有等式连接，所以替代前后等价.\\
+					再者证明它们可行解相同：在PIVOT中，我们根据选定的$e$与$l_e$来解方程，然后利用这个表达式来替代所有有关$e$的变量，其可行解仍然与之前等价.\\
+					因此可证得给定的松弛型与返回的松弛型等价.
+				\end{proof}
+			\section*{29.3-5}
+				\subsection*{原式}
+				最大化：$18x_1+12.5x_2$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_1 & + &  &  & x_2 & \le & 20 \\
+				x_1 &   &  &  &     & \le & 12 \\
+				    &   &  &  & x_2 & \le & 16 \\
+				    &   &  & x_1, & x_2 & \ge & 0 
+				\end{matrix}
+				\end{displaymath}
+				\subsection*{首先将标准型转化为松弛型}
+				最大化：$18x_1+12.5x_2$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_3 & = & 20 & - & x_1 & - & x_2 \\
+				x_4 & = & 12 & - & x_1 &   &     \\
+				x_5 & = & 16 & - & x_2 &   &     \\
+				x_1, & x_2, & x_3, & x_4, & x_5 & \ge & 0
+				\end{matrix}
+				\end{displaymath}
+				\subsection*{选定$x_1$作为基本变量}
+				最大化：$216-18x_4+12.5x_2$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_3 & = & 8 & + & x_4 & - & x_2 \\
+				x_1 & = & 12 & - & x_4 &   &     \\
+				x_5 & = & 16 & - & x_2 &   &     \\
+				x_1, & x_2, & x_3, & x_4, & x_5 & \ge & 0
+				\end{matrix}
+				\end{displaymath}
+				\subsection*{选定$x_2$作为基本变量}
+				最大化：$316-5.5x_4+12.5x_3$\\
+				满足约束：\begin{displaymath}
+				\begin{matrix}
+				x_2 & = & 8 & + & x_4 & - & x_3 \\
+				x_1 & = & 12 & - & x_4 &   &    \\
+				x_5 & = & 8 & - & x_4 & + & x_3 \\
+				x_1, & x_2, & x_3, & x_4, & x_5 & \ge & 0
+				\end{matrix}
+				\end{displaymath}
+				因为此时没有纯减的非基本变量，故不再进行下去，最优解即为(12,8,0,0,8)，目标值为316.
+			\section*{29.4-2}
+				首先，若问题是最小化问题，通过取负将其转化为最大化问题；其次，我们将原先第$j$行的各系数放至其对偶线性规划第$j$列的相应位置，将约束不等式中的不等号反向，将MAXIMUN中的各系数与不等式中不等号右边的值进行交换，如此可以得到对偶线性规划，
+			\section*{29-1}
+				\subsection*{a.}
+					\begin{proof}
+						如果我有一个线性规划的算法，则会有目标函数及各个约束不等式。先将这些约束不等式作为一个线性系统中的各个不等式，并且将目标函数作为线性系统的常数.如果该线性规划算法没有任何可行解，那么约束不等式之间的交集即为空集，此时相应的线性不等式必然无解；反之，若该线性规划有可行解，则约束不等式交集非空，线性不等式便有解.
+					\end{proof}
+				\subsection*{b.}
+					\begin{proof}
+						考虑如何将目标函数设定为一个常数，这样就可以由线性不等式的可行性算法直接推导出线性规划求解.选定一个数$k$，且设定$c_k$为常数，保证目标函数始终保持一个常数.同时考虑对偶的线性变换，可如下构造：
+						最大化：$316-5.5x_4+12.5x_3$\\
+						满足约束：\begin{displaymath}
+						\begin{matrix}
+						Ax & \le & b &  &  \\
+						A^Ty & \ge & c  &  &  \\
+						c_kx_k & = & \sum_{i=1}^{m}b_iy_i & - & \sum_{j=1}^{n}c_jy_j  
+						\end{matrix}
+						\end{displaymath}
+						若该线性不等式无解，则可知线性规划没有可行解；否则能够通过单纯形算法求解该线性规划的最优解，
+					\end{proof}
+		\end{SChinese}
+	\end{CJK}
+\end{document}

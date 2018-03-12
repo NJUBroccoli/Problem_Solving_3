@@ -1,0 +1,124 @@
+\documentclass[twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{CJKutf8}
+\usepackage{CJK}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{newfloat}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usetikzlibrary{arrows,automata}
+
+\newenvironment{SChinese}{%
+	\CJKfamily{gbsn}%
+	\CJKtilde
+	\CJKnospace}{}
+
+\begin{document}
+	\begin{CJK}{UTF8}{}	
+		\begin{SChinese}	
+			\title{问题求解（三）第2周作业}
+			\author{黄奕诚 161220049}
+			
+			\maketitle
+			\section*{TC Chapter 25}
+			\subsection*{25-1.4}
+			\begin{proof}
+				欲证该算法中所定义的矩阵乘法是相关的，可证明$(A\cdot B)\cdot C = A\cdot(B\cdot C)$，根据EXTEND-SHORTEST-PATHS的矩阵乘法，可令$S = (A\cdot B)\cdot C,S'=A\cdot(B\cdot C)$.\\
+				$s_{i,j}=\sum_{t=1}^{n}(\sum_{k=1}^{n}a_{ik}b{kt})c_{tj}$ \\
+				$ = \sum_{t=1}^{n}\sum_{k=1}^{n}a_{ik}b{kt}c_{tj}$ \\
+				$ = \sum_{t=1}^{n}(a\cdot b)_{it}\cdot c_{tj}$ \\
+				$ = (a\cdot b\cdot c)_{ij}$\\
+				同理可证$s_{ij}' = (a\cdot b\cdot c)_{ij}$，由此可知其相关性.
+			\end{proof}
+			\subsection*{25-1.5}
+				不妨联想一下多源最短路径算法的矩阵，这是一个$|V|\times|V|$的矩阵，而对于单源最短路径问题，只需要从中抽取出一行从结点$s$出发的行即可.可以定义一个向量与矩阵相乘的运算：$v_{i+1} = v_iW$，当计算$v_{n-1}$之后停止，则能够计算出从$s$出发的最短路径.\\
+				与Bellman-Ford算法的关系：实际上，本节中讨论的算法关键是$v_i$表示最多经过$i$条边，在单源最短路径问题上，这与Bellman-Ford算法逐步进行RELAX操作的循环不变式是吻合的.
+			\subsection*{25-1.6}
+				\begin{algorithm}[]
+				\caption{PREDECESSOR-MATRIX(L,W)}
+				\begin{algorithmic}[1]
+					\STATE $n = L.rows$\
+					\FOR{$i = 1$ \TO $n$}
+					\FOR{$j = 1$ \TO $n$}
+					\FOR{$k = 1$ \TO $n$}
+					\IF{$L[i][j] = L[i][k]+W[k][j]$}
+					\STATE $\pi[i][j] = k$\
+					\ENDIF
+					\ENDFOR
+					\ENDFOR
+					\ENDFOR
+				\end{algorithmic}
+				\end{algorithm}
+			如此可在$O(n^3)$的时间内计算出前驱矩阵.
+			\subsection*{25-1.9}
+				思路：在循环执行结束后，再多计算一步$L^{(2m)}$即可，若其与$L^{(2m)}$比较.若相等，则无负权重回路，反之则存在负权重回路.
+				\begin{algorithm}[]
+					\caption{FASTER-ALL-PAIRS-SHORTEST-PATHS(W)}
+					\begin{algorithmic}[1]
+						\STATE $n = W.rows$\
+						\STATE $L^{(1)} = W$\
+						\STATE $m = 1$\
+						\WHILE{$m < n-1$}
+						\STATE let $L^{(2m)}$ be a new $n\times n$ matrix\
+						\STATE $L^{(2m)}$ = EXTEND-SHORTEST-PATHS($L^{(m)},W$)\
+						\STATE $m = 2m$\
+						\ENDWHILE
+						\STATE $L'$ = EXTEND-SHORTEST-PATHS($L^{(m)},W$)\
+						\IF {$L' = L$}
+						\STATE print(No negative circle)\
+						\ELSE
+						\STATE print(Have negative circle!)\
+						\ENDIF
+						\RETURN $L^{(m)}$
+					\end{algorithmic}
+				\end{algorithm}
+			\subsection*{25-1.10}
+				可以先在FASTER-ALL-PAIRS-SHORTEST-PATHS(W)中记录下所有存在于负权重的环中的结点，方法为：如果一个结点$v$存在于一个负权重的环中，则会出现在某一个$m$时，有$W_{ii} < 0$，每次遍历一遍所有结点，一旦出现上述情况，则记录进集合.在该算法结束后，通过判断各结点之间的连接情况，来计算负权重环路的长度.
+			\subsection*{25-2.2}
+				可以模仿CLRS P407的定义，将25.1中的EXTEND-SHORTEST-PATHS中的$l_{ij}' = min(l{ij}',l_{ik}+\omega_{kj})$改为$l_{ij}' = l_{ij}'\vee(v_{ik}\wedge\omega_{kj})$.同时定义：
+				\begin{displaymath}
+					\omega_{ij} = \{
+					\begin{matrix}
+					0 & \quad i\neq j\textrm{且}(i,j)\notin E \\
+					1 & \quad i = j\textrm{或}(i,j)\in E\\
+					\end{matrix}	
+				\end{displaymath}
+				\\
+				然后可以运行FASTER-ALL-PAIRS-SHORTEST-PATHS算法.
+			\subsection*{25-2.4}
+				\begin{proof}
+					该算法相对于FLOYD-WARSHALL算法，去掉了所有上标，以前的版本为$d_{ij}^{(k)} = min(d_{ij}^{(k-1)},d_{ik}^{(k-1)}+d_{kj}^{(k-1)})$.即证明这个递归式执行后不改变右侧各个表达式的值.对于$d_{ij}^{(k)}$来说，由于其不经过$k$，与上标无关，故不改变值.而对于$d_{ik}^{(k-1)}$来说，从$i$到$k$的最短路径相当于从$i$到$k-1$的最短路径，两者没有区别，因而不会改变.所以去掉上标后的算法仍然正确.
+				\end{proof}
+			\subsection*{25-2.6}
+				此题与25.1-10想法类似，主要在算法主体执行完毕后，检查所有的$D_{ii}$(也即对角线上的值)，若存在负数，则存在负权重的环.
+			\subsection*{25-2.8}
+				初始化一个所有元素都为0的矩阵，如果一个结点$i$可以到达$j$，则将$(i,j)$填为1.目的是找到一个$O(VE)$的算法，来完成这个任务.\\
+				将所有边的权重赋值为1，有$\delta(i,j) < |E|$，对于一个给定的结点$i$，计算$\delta(i,j)$最多需要$|E|$的时间.再对每一个结点如此遍历，则该算法可以在$O(VE)$的时间内结束.
+			\subsection*{25-3.2}
+				目的：用来解决非连通图的情况，通过文中给出的新结点$s$，可以顺利地计算出每一个结点的情况(包括两种无穷大).而如果使用图中的结点，则对于无法达到的点无法判断它的情况.
+			\subsection*{25-3.3}
+				总有$\omega = \widehat{\omega}$.由于所有边的权重全为非负值，则有\[\
+				d_{uv} = \delta(u,v) = \widehat{\delta}(u,v)
+				\]
+				又有\[
+				\delta(u,v) = \widehat{\delta}(u,v)+h(v)-h(v) \]
+				因此总有$h(v) = h(u)$.\\
+				由此可推导出$\omega = \widehat{\omega}$.
+			\subsection*{25-2}
+			\subsubsection*{a.}
+				类比二叉堆，并相应改变三个操作的算法，容易得出INSERT,EXTRACT-MIN,DECREASE-KEY的渐进运行时间分别为$O(\log_dn),O(d\log_dn),O(\log_dn)$.当$d = \varTheta(n^{\alpha})$时，代入式子中，得$O(\frac{1}{\alpha}),O(\frac{n^{\alpha}}{\alpha}),O(\frac{1}{\alpha})$.摊还代价为$O(1),O(\lg n),O(1)$.
+			\subsubsection*{b.}
+				$d = n^{\epsilon}$，在DIJKSTRA算法中使用d叉堆数据结构，运行时间为$O(\frac{n}{\epsilon}+\frac{2n^{\epsilon+1}}{\epsilon})$\\
+				也即$O(V^{1+\epsilon}) = O(E)$.
+			\subsubsection*{c.}
+				对每一个结点都执行b中的算法，即可计算出所有结点对之间的最短路径.
+			\subsubsection*{d.}
+				此时包含了权重为负值的边，不可使用DIJKSTRA算法，故不能沿用b,c的算法.这里可以使用JOHNSON算法，由于算法复杂度为$O(VE+V^2\lg V)$，将$|E|=\varTheta(V^{1+\epsilon})$代入，得$O(V^{2+\epsilon}+V^{2+p})$，其中$0<\epsilon\le1$，只要满足$\epsilon > p$即可在$O(VE)$时间内计算结束.
+\end{SChinese}
+	\end{CJK}
+\end{document}
